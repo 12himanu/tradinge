@@ -1,0 +1,161 @@
+name: stock-ai
+
+# Shared definition for the three Laravel processes (API, Horizon, scheduler).
+x-laravel: &laravel
+  build: ./infra/docker/php
+  image: stock-ai/php:dev
+  working_dir: /var/www/backend
+  environment: &laravel-env
+    DB_CONNECTION: pgsql
+    DB_HOST: postgres
+    DB_PORT: 5432
+    DB_DATABASE: ${POSTGRES_DB}
+    DB_USERNAME: ${POSTGRES_USER}
+    DB_PASSWORD: ${POSTGRES_PASSWORD}
+    REDIS_HOST: redis
+    REDIS_PORT: 6379
+    ENGINE_URL: http://ai-engine:8100
+    ENGINE_HMAC_SECRET: ${ENGINE_HMAC_SECRET}
+    CHARTS_ROOT: /storage/charts
+    OWNER_NAME: ${OWNER_NAME}
+    OWNER_EMAIL: ${OWNER_EMAIL}
+    OWNER_PASSWORD: ${OWNER_PASSWORD}
+  volumes:
+    - ./backend:/var/www/backend
+    # Read-only so the contract tests validate against the schemas the engine actually exports,
+    # rather than a copy that can drift.
+    - ./ai-engine/contracts:/var/www/ai-engine/contracts:ro
+    # Writable: this is where `scramble:export` puts the OpenAPI document the frontend generates
+    # its types from, so the codegen can run inside the container that has PHP.
+    - ./contracts:/var/www/contracts
+    - ./storage:/storage
+  depends_on:
+    postgres:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+  restart: unless-stopped
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT:-5442}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./infra/postgres/init.sh:/docker-entrypoint-initdb.d/01-init.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "${REDIS_PORT:-6390}:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  backend:
+    <<: *laravel
+    # --no-reload keeps the compose environment (DB/Redis hosts, secrets) in the server workers;
+    # without it `artisan serve` strips those variables and re-reads backend/.env on each request.
+    # Restart the service after editing backend/.env.
+    command: ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000", "--no-reload"]
+    environment:
+      <<: *laravel-env
+      PHP_CLI_SERVER_WORKERS: 4
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/up"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  horizon:
+    <<: *laravel
+    command: ["php", "artisan", "horizon"]
+    healthcheck:
+      test: ["CMD", "php", "artisan", "horizon:status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  scheduler:
+    <<: *laravel
+    command: ["php", "artisan", "schedule:work"]
+
+  ai-engine:
+    build:
+      context: ./ai-engine
+      dockerfile: ../infra/docker/python/Dockerfile
+    image: stock-ai/ai-engine:dev
+    command: ["uvicorn", "ai_engine.main:create_app", "--factory", "--host", "0.0.0.0", "--port", "8100",
+              "--reload", "--reload-dir", "/app/ai_engine", "--reload-dir", "/app/config"]
+    environment:
+      ENGINE_HMAC_SECRET: ${ENGINE_HMAC_SECRET}
+      ENGINE_OLLAMA_HOST: ${OLLAMA_HOST}
+      ENGINE_MODEL_PROFILE: ${MODEL_PROFILE}
+      ENGINE_STORAGE_ROOT: /storage
+      # Reads the chart's title and refuses to analyse a screenshot of another instrument. Costs
+      # one extra model load per analysis; set false to trust the declared symbol instead.
+      ENGINE_SYMBOL_CHECK_ENABLED: ${SYMBOL_CHECK_ENABLED:-true}
+      WATCHFILES_FORCE_POLLING: "true"
+    volumes:
+      - ./ai-engine:/app
+      - ./storage:/storage:ro
+    ports:
+      - "${ENGINE_PORT:-8100}:8100"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8100/livez"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 15s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../infra/docker/node/Dockerfile
+    image: stock-ai/frontend:dev
+    environment:
+      BACKEND_INTERNAL_URL: http://backend:8000
+      WATCHPACK_POLLING: "true"
+      NEXT_TELEMETRY_DISABLED: "1"
+    volumes:
+      - ./frontend:/app
+      # `npm run gen:api` reads the exported OpenAPI document from here.
+      - ./contracts:/contracts:ro
+      - frontend_node_modules:/app/node_modules
+      - frontend_next:/app/.next
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  redisdata:
+  frontend_node_modules:
+  frontend_next:

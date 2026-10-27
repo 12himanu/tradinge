@@ -1,0 +1,25 @@
+# OS and editors
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Environment (secrets)
+.env
+.env.*
+!.env.example
+
+# User data — screenshots and exported reports never go into git
+storage/charts/*
+!storage/charts/.gitkeep
+storage/reports/*
+!storage/reports/.gitkeep
+
+# Local scratch
+*.log
+tmp/
+
+# Python bytecode (per-app ignores cover the rest)
+__pycache__/

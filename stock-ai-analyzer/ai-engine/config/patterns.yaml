@@ -1,0 +1,75 @@
+# Geometry tolerances for swings, levels, classic patterns and SMC (docs/04-ai-agent-workflow.md §5.4, §5.5).
+# Every tolerance is expressed in ATR units so it adapts to the instrument's volatility.
+swings:
+  internal_fractal: 2
+  external_fractal: 5
+  zigzag_atr_threshold: 1.5
+
+levels:
+  cluster_tolerance_atr: 0.5
+  max_levels_per_side: 4
+  recency_half_life_bars: 60
+  min_touches: 1
+
+patterns:
+  min_confidence: 0.45
+  forming_confidence_cap: 0.70
+  double:
+    max_pivot_difference_atr: 0.5
+    min_bars_apart: 8
+    max_bars_apart: 120
+    min_neckline_distance_atr: 1.5
+  head_shoulders:
+    min_head_prominence_atr: 1.0
+    max_shoulder_difference_atr: 1.0
+    max_bars_span: 150
+  triangle:
+    min_touches: 5
+    max_fit_residual_atr: 0.3
+    max_slope_ratio_flat: 0.25   # |slope| x bars / ATR below this counts as flat
+    min_bars: 12
+    max_bars: 150
+  flag:
+    min_pole_atr: 3.0
+    max_pole_bars: 10
+    min_flag_bars: 5
+    max_flag_bars: 20
+    max_retracement: 0.5
+    invalidation_retracement: 0.618
+  wedge:
+    min_touches: 4
+    max_fit_residual_atr: 0.35
+    min_convergence_ratio: 0.25   # end width <= (1 - this) x start width
+    min_bars: 12
+    max_bars: 150
+  channel:
+    min_touches_per_side: 2
+    max_slope_difference: 0.3     # relative difference between boundary slopes
+    max_fit_residual_atr: 0.35
+    min_bars: 15
+  cup_handle:
+    min_bars: 25
+    max_bars: 200
+    min_depth_pct: 12.0
+    max_depth_pct: 35.0
+    min_fit_r2: 0.80
+    max_handle_depth_ratio: 0.334
+    max_handle_bars: 30
+
+candlesticks:
+  near_level_atr: 0.5
+  min_body_ratio_engulfing: 0.55
+  hammer_wick_ratio: 2.0
+  doji_body_ratio: 0.1
+
+smc:
+  displacement_atr: 1.5
+  displacement_body_ratio: 0.6
+  fvg_min_size_atr: 0.2
+  fvg_mitigation_fill: 0.5
+  equal_level_tolerance_atr: 0.1
+  min_equal_touches: 2
+  order_block_lookback: 10
+  premium_threshold: 0.62
+  discount_threshold: 0.38
+  max_zones_reported: 5

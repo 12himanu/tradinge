@@ -1,0 +1,1428 @@
+{
+  "schema_version": "1.0",
+  "analysis_id": "01JEXAMPLEANALYSISID0000001",
+  "engine_version": "0.1.0+cfg.679b6c6b",
+  "status": "completed",
+  "symbol": "ASCT",
+  "timeframe": "1D",
+  "trading_style": "swing",
+  "tier": "A",
+  "data_quality": 0.869,
+  "as_of": "2025-04-23T00:00:00Z",
+  "last_price": 590.0106,
+  "bar_count": 113,
+  "bias": "bullish",
+  "setup_score": 77,
+  "decision": {
+    "action": "buy",
+    "rule_id": 6,
+    "conditions": [
+      "Risk is defined by the stop at 584.09"
+    ],
+    "invalidation": 584.0896,
+    "limited": false,
+    "rationale": "Setup score 77 with a viable plan whose trigger is already met (net R:R 10.68)."
+  },
+  "score": {
+    "setup_score": 77,
+    "raw_score": 0.628,
+    "effective_score": 0.5457,
+    "bias": "bullish",
+    "data_quality": 0.869,
+    "evidence_agreement": 0.833,
+    "factors": [
+      {
+        "key": "trend_ema_alignment",
+        "label": "EMA alignment",
+        "value": 1.0,
+        "weight": 0.15,
+        "effective_weight": 0.1667,
+        "contribution": 0.1667,
+        "available": true,
+        "reason": "3 of 3 EMA pairs in the bullish order (EMA 9 > EMA 21 > EMA 50)",
+        "evidence_ids": [
+          "E7",
+          "E8",
+          "E9"
+        ]
+      },
+      {
+        "key": "market_structure",
+        "label": "Market structure",
+        "value": 1.0,
+        "weight": 0.15,
+        "effective_weight": 0.1667,
+        "contribution": 0.1667,
+        "available": true,
+        "reason": "Structure bullish, last event BOS BULLISH",
+        "evidence_ids": [
+          "E17"
+        ]
+      },
+      {
+        "key": "price_location",
+        "label": "Price vs EMA 50/200",
+        "value": 1.0,
+        "weight": 0.1,
+        "effective_weight": 0.1111,
+        "contribution": 0.1111,
+        "available": true,
+        "reason": "Close above EMA 50",
+        "evidence_ids": [
+          "E9"
+        ]
+      },
+      {
+        "key": "volume_confirmation",
+        "label": "Volume confirmation",
+        "value": 0.9368,
+        "weight": 0.12,
+        "effective_weight": 0.1111,
+        "contribution": 0.1041,
+        "available": true,
+        "reason": "Up/down volume ratio 2.00 over 20 bars; latest bar RVOL 0.79",
+        "evidence_ids": [
+          "E15",
+          "E16"
+        ]
+      },
+      {
+        "key": "room_to_move",
+        "label": "Room to the next level",
+        "value": 1.0,
+        "weight": 0.1,
+        "effective_weight": 0.0926,
+        "contribution": 0.0926,
+        "available": true,
+        "reason": "No resistance left inside the window",
+        "evidence_ids": []
+      },
+      {
+        "key": "range_location",
+        "label": "Location in the dealing range",
+        "value": -1.0,
+        "weight": 0.08,
+        "effective_weight": 0.0741,
+        "contribution": -0.0741,
+        "available": true,
+        "reason": "Price at 100% of the dealing range (premium)",
+        "evidence_ids": [
+          "E25"
+        ]
+      },
+      {
+        "key": "pattern",
+        "label": "Chart pattern",
+        "value": 0.532,
+        "weight": 0.12,
+        "effective_weight": 0.1111,
+        "contribution": 0.0591,
+        "available": true,
+        "reason": "Ascending triangle (confirmed) at 53% confidence",
+        "evidence_ids": [
+          "E26"
+        ]
+      },
+      {
+        "key": "momentum_macd",
+        "label": "MACD momentum",
+        "value": 0.65,
+        "weight": 0.08,
+        "effective_weight": 0.0741,
+        "contribution": 0.0481,
+        "available": true,
+        "reason": "MACD histogram +2.048 and falling, line above zero",
+        "evidence_ids": [
+          "E12"
+        ]
+      },
+      {
+        "key": "momentum_rsi",
+        "label": "RSI regime",
+        "value": -0.5,
+        "weight": 0.1,
+        "effective_weight": 0.0926,
+        "contribution": -0.0463,
+        "available": true,
+        "reason": "RSI in the bullish regime, bearish divergence against the last swing high at 90.7 (above 70 is context in a strong trend, not a sell signal)",
+        "evidence_ids": [
+          "E11",
+          "E10"
+        ]
+      }
+    ],
+    "dropped_factors": [],
+    "adx_regime": "trending"
+  },
+  "indicators": [
+    {
+      "key": "ema_9",
+      "name": "ema",
+      "params": {
+        "period": 9.0
+      },
+      "value": 580.6299,
+      "components": null,
+      "signal": "bullish",
+      "status": "computed",
+      "unavailable_reason": null,
+      "evidence_id": "E7"
+    },
+    {
+      "key": "ema_21",
+      "name": "ema",
+      "params": {
+        "period": 21.0
+      },
+      "value": 570.0493,
+      "components": null,
+      "signal": "bullish",
+      "status": "computed",
+      "unavailable_reason": null,
+      "evidence_id": "E8"
+    },
+    {
+      "key": "ema_50",
+      "name": "ema",
+      "params": {
+        "period": 50.0
+      },
+      "value": 557.0873,
+      "components": null,
+      "signal": "bullish",
+      "status": "computed",
+      "unavailable_reason": null,
+      "evidence_id": "E9"
+    },
+    {
+      "key": "ema_200",
+      "name": "ema",
+      "params": {
+        "period": 200.0
+      },
+      "value": null,
+      "components": null,
+      "signal": null,
+      "status": "unavailable",
+      "unavailable_reason": "needs 200 bars; 113 available",
+      "evidence_id": null
+    },
+    {
+      "key": "rsi_14",
+      "name": "rsi",
+      "params": {
+        "period": 14.0
+      },
+      "value": 90.6587,
+      "components": null,
+      "signal": "bullish",
+      "status": "computed",
+      "unavailable_reason": null,
+      "evidence_id": "E11"
+    },
+    {
+      "key": "macd_12_26_9",
+      "name": "macd",
+      "params": {
+        "fast": 12.0,
+        "slow": 26.0,
+        "signal": 9.0
+      },
+      "value": 10.458,
+      "components": {
+        "macd": 10.458,
+        "signal": 8.409556,
+        "hist": 2.048444
+      },
+      "signal": "bullish",
+      "status": "computed",
+      "unavailable_reason": null,
+      "evidence_id": "E12"
+    },
+    {
+      "key": "adx_14",
+      "name": "adx",
+      "params": {
+        "period": 14.0
+      },
+      "value": 54.4997,
+      "components": {
+        "adx": 54.4997,
+        "plus_di": 48.6088,
+        "minus_di": 4.4983
+      },
+      "signal": "bullish",
+      "status": "computed",
+      "unavailable_reason": null,
+      "evidence_id": "E13"
+    },
+    {
+      "key": "atr_14",
+      "name": "atr",
+      "params": {
+        "period": 14.0
+      },
+      "value": 4.1936,
+      "components": null,
+      "signal": null,
+      "status": "computed",
+      "unavailable_reason": null,
+      "evidence_id": "E14"
+    },
+    {
+      "key": "rvol_20",
+      "name": "rvol",
+      "params": {
+        "period": 20.0
+      },
+      "value": 0.7892,
+      "components": null,
+      "signal": null,
+      "status": "computed",
+      "unavailable_reason": null,
+      "evidence_id": "E16"
+    },
+    {
+      "key": "obv",
+      "name": "obv",
+      "params": {},
+      "value": 2850650.98,
+      "components": null,
+      "signal": null,
+      "status": "computed",
+      "unavailable_reason": null,
+      "evidence_id": null
+    }
+  ],
+  "patterns": [
+    {
+      "category": "classic",
+      "type": "ascending_triangle",
+      "direction": "bullish",
+      "status": "confirmed",
+      "confidence": 0.532,
+      "detection_method": "algorithmic",
+      "start_time": "2025-01-20T00:00:00Z",
+      "end_time": "2025-04-23T00:00:00Z",
+      "price_low": 553.9184,
+      "price_high": 559.8181,
+      "key_points": {
+        "upper_slope": -0.007915,
+        "upper_intercept": 560.7045,
+        "lower_slope": 0.690745,
+        "lower_intercept": 476.555,
+        "upper_touches": 3,
+        "lower_touches": 3,
+        "apex_index": 120.4,
+        "bars": 70.0
+      },
+      "confirmation_rule": "Close above 559.82",
+      "measured_target": 630.6931,
+      "invalidation_price": 553.9184,
+      "evidence_id": "E26"
+    }
+  ],
+  "levels": [
+    {
+      "type": "support",
+      "price_low": 560.1231,
+      "price_high": 560.6648,
+      "strength": 0.777,
+      "touches": 6,
+      "source": "pivots",
+      "last_touch": "2025-03-16T00:00:00Z",
+      "evidence_id": "E3"
+    },
+    {
+      "type": "support",
+      "price_low": 537.1274,
+      "price_high": 537.1274,
+      "strength": 0.714,
+      "touches": 2,
+      "source": "pivots",
+      "last_touch": "2025-03-31T00:00:00Z",
+      "evidence_id": "E4"
+    },
+    {
+      "type": "support",
+      "price_low": 519.8744,
+      "price_high": 519.8744,
+      "strength": 0.666,
+      "touches": 2,
+      "source": "pivots",
+      "last_touch": "2025-03-02T00:00:00Z",
+      "evidence_id": "E5"
+    },
+    {
+      "type": "support",
+      "price_low": 498.3788,
+      "price_high": 498.3788,
+      "strength": 0.614,
+      "touches": 2,
+      "source": "pivots",
+      "last_touch": "2025-02-03T00:00:00Z",
+      "evidence_id": "E6"
+    },
+    {
+      "type": "equilibrium",
+      "price_low": 548.6765,
+      "price_high": 548.6765,
+      "strength": 0.5,
+      "touches": 0,
+      "source": "smc",
+      "last_touch": null,
+      "evidence_id": "E25"
+    }
+  ],
+  "smc": {
+    "structure": "bullish",
+    "last_event": "bos_bullish",
+    "swings": [
+      {
+        "index": 19,
+        "date": "2025-01-20T00:00:00Z",
+        "price": 560.6648,
+        "kind": "high",
+        "degree": "external",
+        "label": null
+      },
+      {
+        "index": 33,
+        "date": "2025-02-03T00:00:00Z",
+        "price": 498.3788,
+        "kind": "low",
+        "degree": "external",
+        "label": null
+      },
+      {
+        "index": 46,
+        "date": "2025-02-16T00:00:00Z",
+        "price": 560.1231,
+        "kind": "high",
+        "degree": "external",
+        "label": "LH"
+      },
+      {
+        "index": 60,
+        "date": "2025-03-02T00:00:00Z",
+        "price": 519.8744,
+        "kind": "low",
+        "degree": "external",
+        "label": "HL"
+      },
+      {
+        "index": 74,
+        "date": "2025-03-16T00:00:00Z",
+        "price": 560.2256,
+        "kind": "high",
+        "degree": "external",
+        "label": "HH"
+      },
+      {
+        "index": 89,
+        "date": "2025-03-31T00:00:00Z",
+        "price": 537.1274,
+        "kind": "low",
+        "degree": "external",
+        "label": "HL"
+      }
+    ],
+    "events": [
+      {
+        "category": "smc",
+        "type": "bos",
+        "direction": "bullish",
+        "status": "confirmed",
+        "confidence": 0.8,
+        "detection_method": "algorithmic",
+        "start_time": "2025-03-16T00:00:00Z",
+        "end_time": "2025-04-11T00:00:00Z",
+        "price_low": 560.2256,
+        "price_high": 560.2256,
+        "key_points": {
+          "level": 560.2256,
+          "broken_at_index": 100,
+          "swing_index": 74
+        },
+        "confirmation_rule": "Close above 560.23",
+        "measured_target": null,
+        "invalidation_price": null,
+        "evidence_id": "E18"
+      },
+      {
+        "category": "smc",
+        "type": "fvg",
+        "direction": "bullish",
+        "status": "unmitigated",
+        "confidence": 0.55,
+        "detection_method": "algorithmic",
+        "start_time": "2025-04-21T00:00:00Z",
+        "end_time": "2025-04-23T00:00:00Z",
+        "price_low": 586.1864,
+        "price_high": 588.0809,
+        "key_points": {
+          "middle_index": 111,
+          "fill_level": 587.1337
+        },
+        "confirmation_rule": "Support while unfilled",
+        "measured_target": null,
+        "invalidation_price": null,
+        "evidence_id": "E19"
+      },
+      {
+        "category": "smc",
+        "type": "fvg",
+        "direction": "bullish",
+        "status": "unmitigated",
+        "confidence": 0.55,
+        "detection_method": "algorithmic",
+        "start_time": "2025-04-19T00:00:00Z",
+        "end_time": "2025-04-21T00:00:00Z",
+        "price_low": 581.6049,
+        "price_high": 582.7553,
+        "key_points": {
+          "middle_index": 109,
+          "fill_level": 582.1801
+        },
+        "confirmation_rule": "Support while unfilled",
+        "measured_target": null,
+        "invalidation_price": null,
+        "evidence_id": "E20"
+      },
+      {
+        "category": "smc",
+        "type": "fvg",
+        "direction": "bullish",
+        "status": "unmitigated",
+        "confidence": 0.55,
+        "detection_method": "algorithmic",
+        "start_time": "2025-04-16T00:00:00Z",
+        "end_time": "2025-04-18T00:00:00Z",
+        "price_low": 574.2307,
+        "price_high": 575.3918,
+        "key_points": {
+          "middle_index": 106,
+          "fill_level": 574.8113
+        },
+        "confirmation_rule": "Support while unfilled",
+        "measured_target": null,
+        "invalidation_price": null,
+        "evidence_id": "E21"
+      },
+      {
+        "category": "smc",
+        "type": "fvg",
+        "direction": "bullish",
+        "status": "unmitigated",
+        "confidence": 0.55,
+        "detection_method": "algorithmic",
+        "start_time": "2025-04-15T00:00:00Z",
+        "end_time": "2025-04-17T00:00:00Z",
+        "price_low": 571.7594,
+        "price_high": 574.1705,
+        "key_points": {
+          "middle_index": 105,
+          "fill_level": 572.9649
+        },
+        "confirmation_rule": "Support while unfilled",
+        "measured_target": null,
+        "invalidation_price": null,
+        "evidence_id": "E22"
+      },
+      {
+        "category": "smc",
+        "type": "fvg",
+        "direction": "bullish",
+        "status": "unmitigated",
+        "confidence": 0.55,
+        "detection_method": "algorithmic",
+        "start_time": "2025-04-14T00:00:00Z",
+        "end_time": "2025-04-16T00:00:00Z",
+        "price_low": 568.1359,
+        "price_high": 569.8698,
+        "key_points": {
+          "middle_index": 104,
+          "fill_level": 569.0029
+        },
+        "confirmation_rule": "Support while unfilled",
+        "measured_target": null,
+        "invalidation_price": null,
+        "evidence_id": "E23"
+      },
+      {
+        "category": "smc",
+        "type": "equal_highs",
+        "direction": "bearish",
+        "status": "confirmed",
+        "confidence": 0.6,
+        "detection_method": "algorithmic",
+        "start_time": "2025-02-16T00:00:00Z",
+        "end_time": "2025-03-16T00:00:00Z",
+        "price_low": 559.9646,
+        "price_high": 560.384,
+        "key_points": {
+          "touches": 2,
+          "level": 560.1743
+        },
+        "confirmation_rule": "Liquidity resting above",
+        "measured_target": null,
+        "invalidation_price": null,
+        "evidence_id": "E24"
+      }
+    ],
+    "dealing_range": {
+      "low": 537.1274,
+      "high": 560.2256,
+      "equilibrium": 548.6765,
+      "position": 1.0,
+      "zone": "premium"
+    },
+    "framing_note": "Smart Money Concepts are a rule-based framework for reading price structure. The zones below are derived from price action alone; they do not reveal actual institutional orders or intentions."
+  },
+  "scenarios": [
+    {
+      "name": "bullish",
+      "primary": true,
+      "trigger": "Daily close above 588.08",
+      "trigger_type": "close_above",
+      "trigger_price": 588.0809,
+      "targets": [
+        630.6931
+      ],
+      "invalidation": 584.0896,
+      "narrative": null
+    },
+    {
+      "name": "bearish",
+      "primary": false,
+      "trigger": "Daily close below 560.12",
+      "trigger_type": "close_below",
+      "trigger_price": 560.1231,
+      "targets": [
+        537.1274,
+        519.8744
+      ],
+      "invalidation": 598.3977,
+      "narrative": null
+    }
+  ],
+  "trade_plans": [
+    {
+      "direction": "long",
+      "entry_type": "pullback",
+      "entry_price": 588.0809,
+      "trigger_type": "touch",
+      "trigger_price": 588.0809,
+      "stop_price": 584.0896,
+      "targets": [
+        630.6931
+      ],
+      "risk_pct": 0.68,
+      "reward_pct": 7.25,
+      "rr_gross": 10.68,
+      "rr_net": 10.68,
+      "quantity": 210,
+      "position_value": 123496.99,
+      "position_pct": 24.7,
+      "viable": true,
+      "trigger_met": true,
+      "reasons": [],
+      "viable_at_price": null,
+      "stop_basis": "below the fvg, minus the style buffer",
+      "evidence_id": "E37"
+    },
+    {
+      "direction": "long",
+      "entry_type": "market",
+      "entry_price": 590.0106,
+      "trigger_type": "immediate",
+      "trigger_price": null,
+      "stop_price": 558.0263,
+      "targets": [
+        630.6931
+      ],
+      "risk_pct": 5.42,
+      "reward_pct": 6.9,
+      "rr_gross": 1.27,
+      "rr_net": 1.27,
+      "quantity": 150,
+      "position_value": 88501.59,
+      "position_pct": 17.7,
+      "viable": false,
+      "trigger_met": true,
+      "reasons": [
+        "Stop is 7.6 x ATR, wider than the 2.5 x ATR limit for this style",
+        "Net R:R 1.27 is below the 2.0 minimum for this style"
+      ],
+      "viable_at_price": null,
+      "stop_basis": "below the breakout level and the last higher low, minus the style buffer",
+      "evidence_id": "E42"
+    }
+  ],
+  "predictions": [
+    {
+      "kind": "directional_bias",
+      "scenario": "primary",
+      "direction": "long",
+      "timeframe": "1D",
+      "trigger_type": "immediate",
+      "trigger_price": null,
+      "entry_price": null,
+      "stop_price": null,
+      "target_price_1": null,
+      "target_price_2": null,
+      "invalidation_price": null,
+      "reference_price": 590.0106,
+      "as_of": "2025-04-23T00:00:00Z",
+      "horizon_bars": 20,
+      "setup_score": 77,
+      "risk_reward": null
+    },
+    {
+      "kind": "trade_setup",
+      "scenario": "bullish",
+      "direction": "long",
+      "timeframe": "1D",
+      "trigger_type": "touch",
+      "trigger_price": 588.0809,
+      "entry_price": 588.0809,
+      "stop_price": 584.0896,
+      "target_price_1": 630.6931,
+      "target_price_2": null,
+      "invalidation_price": 584.0896,
+      "reference_price": 590.0106,
+      "as_of": "2025-04-23T00:00:00Z",
+      "horizon_bars": 20,
+      "setup_score": 77,
+      "risk_reward": 10.68
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E1",
+      "kind": "context",
+      "key": "last_close",
+      "value": 590.0106,
+      "value_high": null,
+      "unit": "price",
+      "source": "price_series",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Last close 590.01 on 2025-04-23 (113 bars analysed)",
+      "weight": 1.0
+    },
+    {
+      "id": "E2",
+      "kind": "context",
+      "key": "data_quality",
+      "value": 0.869,
+      "value_high": null,
+      "unit": "ratio",
+      "source": "price_series",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Data quality 0.87 on tier A from 113 bars; the setup score is scaled by it",
+      "weight": 0.4
+    },
+    {
+      "id": "E3",
+      "kind": "level",
+      "key": "support_1",
+      "value": 560.1231,
+      "value_high": 560.6648,
+      "unit": "price",
+      "source": "pivots",
+      "tier": "A",
+      "as_of": "2025-03-16T00:00:00Z",
+      "text": "Support zone 560.12-560.66, 6 touches, strength 0.78",
+      "weight": 0.9554
+    },
+    {
+      "id": "E4",
+      "kind": "level",
+      "key": "support_2",
+      "value": 537.1274,
+      "value_high": 537.1274,
+      "unit": "price",
+      "source": "pivots",
+      "tier": "A",
+      "as_of": "2025-03-31T00:00:00Z",
+      "text": "Support zone 537.13-537.13, 2 touches, strength 0.71",
+      "weight": 0.9428000000000001
+    },
+    {
+      "id": "E5",
+      "kind": "level",
+      "key": "support_3",
+      "value": 519.8744,
+      "value_high": 519.8744,
+      "unit": "price",
+      "source": "pivots",
+      "tier": "A",
+      "as_of": "2025-03-02T00:00:00Z",
+      "text": "Support zone 519.87-519.87, 2 touches, strength 0.67",
+      "weight": 0.9332
+    },
+    {
+      "id": "E6",
+      "kind": "level",
+      "key": "support_4",
+      "value": 498.3788,
+      "value_high": 498.3788,
+      "unit": "price",
+      "source": "pivots",
+      "tier": "A",
+      "as_of": "2025-02-03T00:00:00Z",
+      "text": "Support zone 498.38-498.38, 2 touches, strength 0.61",
+      "weight": 0.9228000000000001
+    },
+    {
+      "id": "E7",
+      "kind": "indicator",
+      "key": "ema_9",
+      "value": 580.6299,
+      "value_high": null,
+      "unit": "price",
+      "source": "indicators",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "EMA 9 at 580.63, price above it",
+      "weight": 0.6
+    },
+    {
+      "id": "E8",
+      "kind": "indicator",
+      "key": "ema_21",
+      "value": 570.0493,
+      "value_high": null,
+      "unit": "price",
+      "source": "indicators",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "EMA 21 at 570.05, price above it",
+      "weight": 0.6
+    },
+    {
+      "id": "E9",
+      "kind": "indicator",
+      "key": "ema_50",
+      "value": 557.0873,
+      "value_high": null,
+      "unit": "price",
+      "source": "indicators",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "EMA 50 at 557.09, price above it",
+      "weight": 0.6
+    },
+    {
+      "id": "E10",
+      "kind": "indicator",
+      "key": "rsi_divergence_bearish",
+      "value": null,
+      "value_high": null,
+      "unit": "none",
+      "source": "indicators",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Price made a higher high at 560.23 while RSI made a lower high",
+      "weight": 0.8
+    },
+    {
+      "id": "E11",
+      "kind": "indicator",
+      "key": "rsi_14",
+      "value": 90.6587,
+      "value_high": null,
+      "unit": "none",
+      "source": "indicators",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "RSI 14 at 90.7",
+      "weight": 0.7
+    },
+    {
+      "id": "E12",
+      "kind": "indicator",
+      "key": "macd_12_26_9",
+      "value": 10.458,
+      "value_high": null,
+      "unit": "none",
+      "source": "indicators",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "MACD line +10.458, histogram +2.048",
+      "weight": 0.6
+    },
+    {
+      "id": "E13",
+      "kind": "indicator",
+      "key": "adx_14",
+      "value": 54.4997,
+      "value_high": null,
+      "unit": "none",
+      "source": "indicators",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "ADX 14 at 54.5 (trending)",
+      "weight": 0.5
+    },
+    {
+      "id": "E14",
+      "kind": "indicator",
+      "key": "atr_14",
+      "value": 4.1936,
+      "value_high": null,
+      "unit": "price",
+      "source": "indicators",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "ATR 14 at 4.19 (0.7% of price)",
+      "weight": 0.5
+    },
+    {
+      "id": "E15",
+      "kind": "volume",
+      "key": "up_down_volume_ratio",
+      "value": 2.0,
+      "value_high": null,
+      "unit": "ratio",
+      "source": "indicators",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Up-day volume is 2.00 x down-day volume over the last 20 bars",
+      "weight": 0.7
+    },
+    {
+      "id": "E16",
+      "kind": "indicator",
+      "key": "rvol_20",
+      "value": 0.7892,
+      "value_high": null,
+      "unit": "ratio",
+      "source": "indicators",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Latest bar traded at 0.79 x its 20-bar average volume",
+      "weight": 0.6
+    },
+    {
+      "id": "E17",
+      "kind": "structure",
+      "key": "market_structure",
+      "value": null,
+      "value_high": null,
+      "unit": "none",
+      "source": "smc",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Market structure bullish; recent swings LH \u2192 HL \u2192 HH \u2192 HL; last structural event BOS BULLISH",
+      "weight": 0.9
+    },
+    {
+      "id": "E18",
+      "kind": "smc",
+      "key": "smc_bos_0",
+      "value": 560.2256,
+      "value_high": 560.2256,
+      "unit": "price",
+      "source": "smc",
+      "tier": "A",
+      "as_of": "2025-04-11T00:00:00Z",
+      "text": "Bos (bullish, confirmed) at 560.23",
+      "weight": 0.6
+    },
+    {
+      "id": "E19",
+      "kind": "smc",
+      "key": "smc_fvg_1",
+      "value": 586.1864,
+      "value_high": 588.0809,
+      "unit": "price",
+      "source": "smc",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Fvg (bullish, unmitigated) at 586.19-588.08",
+      "weight": 0.6
+    },
+    {
+      "id": "E20",
+      "kind": "smc",
+      "key": "smc_fvg_2",
+      "value": 581.6049,
+      "value_high": 582.7553,
+      "unit": "price",
+      "source": "smc",
+      "tier": "A",
+      "as_of": "2025-04-21T00:00:00Z",
+      "text": "Fvg (bullish, unmitigated) at 581.60-582.76",
+      "weight": 0.6
+    },
+    {
+      "id": "E21",
+      "kind": "smc",
+      "key": "smc_fvg_3",
+      "value": 574.2307,
+      "value_high": 575.3918,
+      "unit": "price",
+      "source": "smc",
+      "tier": "A",
+      "as_of": "2025-04-18T00:00:00Z",
+      "text": "Fvg (bullish, unmitigated) at 574.23-575.39",
+      "weight": 0.6
+    },
+    {
+      "id": "E22",
+      "kind": "smc",
+      "key": "smc_fvg_4",
+      "value": 571.7594,
+      "value_high": 574.1705,
+      "unit": "price",
+      "source": "smc",
+      "tier": "A",
+      "as_of": "2025-04-17T00:00:00Z",
+      "text": "Fvg (bullish, unmitigated) at 571.76-574.17",
+      "weight": 0.6
+    },
+    {
+      "id": "E23",
+      "kind": "smc",
+      "key": "smc_fvg_5",
+      "value": 568.1359,
+      "value_high": 569.8698,
+      "unit": "price",
+      "source": "smc",
+      "tier": "A",
+      "as_of": "2025-04-16T00:00:00Z",
+      "text": "Fvg (bullish, unmitigated) at 568.14-569.87",
+      "weight": 0.6
+    },
+    {
+      "id": "E24",
+      "kind": "smc",
+      "key": "smc_equal_highs_6",
+      "value": 559.9646,
+      "value_high": 560.384,
+      "unit": "price",
+      "source": "smc",
+      "tier": "A",
+      "as_of": "2025-03-16T00:00:00Z",
+      "text": "Equal highs (bearish, confirmed) at 559.96-560.38",
+      "weight": 0.6
+    },
+    {
+      "id": "E25",
+      "kind": "smc",
+      "key": "dealing_range",
+      "value": 537.1274,
+      "value_high": 560.2256,
+      "unit": "price",
+      "source": "smc",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Dealing range 537.13 to 560.23, equilibrium 548.68; price is in the premium",
+      "weight": 0.7
+    },
+    {
+      "id": "E26",
+      "kind": "pattern",
+      "key": "pattern_ascending_triangle_0",
+      "value": 630.6931,
+      "value_high": null,
+      "unit": "price",
+      "source": "pattern_geometry",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Ascending triangle (confirmed), confidence 53%; close above 559.82; measured target 630.69; invalid below 553.92",
+      "weight": 0.9
+    },
+    {
+      "id": "E27",
+      "kind": "factor",
+      "key": "factor_trend_ema_alignment",
+      "value": 0.1667,
+      "value_high": null,
+      "unit": "score",
+      "source": "scoring",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "EMA alignment: 3 of 3 EMA pairs in the bullish order (EMA 9 > EMA 21 > EMA 50) (weight 0.17, contribution +0.167)",
+      "weight": 1.6669999999999998
+    },
+    {
+      "id": "E28",
+      "kind": "factor",
+      "key": "factor_market_structure",
+      "value": 0.1667,
+      "value_high": null,
+      "unit": "score",
+      "source": "scoring",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Market structure: Structure bullish, last event BOS BULLISH (weight 0.17, contribution +0.167)",
+      "weight": 1.6669999999999998
+    },
+    {
+      "id": "E29",
+      "kind": "factor",
+      "key": "factor_price_location",
+      "value": 0.1111,
+      "value_high": null,
+      "unit": "score",
+      "source": "scoring",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Price vs EMA 50/200: Close above EMA 50 (weight 0.11, contribution +0.111)",
+      "weight": 1.111
+    },
+    {
+      "id": "E30",
+      "kind": "factor",
+      "key": "factor_volume_confirmation",
+      "value": 0.1041,
+      "value_high": null,
+      "unit": "score",
+      "source": "scoring",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Volume confirmation: Up/down volume ratio 2.00 over 20 bars; latest bar RVOL 0.79 (weight 0.11, contribution +0.104)",
+      "weight": 1.041
+    },
+    {
+      "id": "E31",
+      "kind": "factor",
+      "key": "factor_room_to_move",
+      "value": 0.0926,
+      "value_high": null,
+      "unit": "score",
+      "source": "scoring",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Room to the next level: No resistance left inside the window (weight 0.09, contribution +0.093)",
+      "weight": 0.926
+    },
+    {
+      "id": "E32",
+      "kind": "factor",
+      "key": "factor_range_location",
+      "value": -0.0741,
+      "value_high": null,
+      "unit": "score",
+      "source": "scoring",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Location in the dealing range: Price at 100% of the dealing range (premium) (weight 0.07, contribution -0.074)",
+      "weight": 0.741
+    },
+    {
+      "id": "E33",
+      "kind": "factor",
+      "key": "factor_pattern",
+      "value": 0.0591,
+      "value_high": null,
+      "unit": "score",
+      "source": "scoring",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Chart pattern: Ascending triangle (confirmed) at 53% confidence (weight 0.11, contribution +0.059)",
+      "weight": 0.591
+    },
+    {
+      "id": "E34",
+      "kind": "factor",
+      "key": "factor_momentum_macd",
+      "value": 0.0481,
+      "value_high": null,
+      "unit": "score",
+      "source": "scoring",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "MACD momentum: MACD histogram +2.048 and falling, line above zero (weight 0.07, contribution +0.048)",
+      "weight": 0.481
+    },
+    {
+      "id": "E35",
+      "kind": "factor",
+      "key": "factor_momentum_rsi",
+      "value": -0.0463,
+      "value_high": null,
+      "unit": "score",
+      "source": "scoring",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "RSI regime: RSI in the bullish regime, bearish divergence against the last swing high at 90.7 (above 70 is context in a strong trend, not a sell signal) (weight 0.09, contribution -0.046)",
+      "weight": 0.463
+    },
+    {
+      "id": "E36",
+      "kind": "factor",
+      "key": "setup_score",
+      "value": 77.0,
+      "value_high": null,
+      "unit": "score",
+      "source": "scoring",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Setup score 77 of 100 (bullish); 83% of the evidence weight agrees. Uncalibrated: no probability is claimed until enough outcomes exist.",
+      "weight": 1.0
+    },
+    {
+      "id": "E37",
+      "kind": "risk",
+      "key": "plan_pullback_0",
+      "value": 588.0809,
+      "value_high": null,
+      "unit": "price",
+      "source": "risk",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Pullback plan: entry 588.08, stop 584.09 (below the fvg, minus the style buffer), targets 630.69; risk 0.68%, reward 7.25%, R:R 10.68 gross and 10.68 net; 210 shares (24.7% of the account) \u2014 viable",
+      "weight": 1.0
+    },
+    {
+      "id": "E38",
+      "kind": "risk",
+      "key": "plan_0_stop",
+      "value": 584.0896,
+      "value_high": null,
+      "unit": "price",
+      "source": "risk",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Stop for the pullback plan: 584.09",
+      "weight": 0.6
+    },
+    {
+      "id": "E39",
+      "kind": "risk",
+      "key": "plan_0_rr_net",
+      "value": 10.68,
+      "value_high": null,
+      "unit": "ratio",
+      "source": "risk",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Net risk-reward for the pullback plan: 10.68",
+      "weight": 0.6
+    },
+    {
+      "id": "E40",
+      "kind": "risk",
+      "key": "plan_0_quantity",
+      "value": 210.0,
+      "value_high": null,
+      "unit": "count",
+      "source": "risk",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Position size in shares for the pullback plan: 210",
+      "weight": 0.6
+    },
+    {
+      "id": "E41",
+      "kind": "risk",
+      "key": "plan_0_target_1",
+      "value": 630.6931,
+      "value_high": null,
+      "unit": "price",
+      "source": "risk",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Target 1 for the pullback plan: 630.69",
+      "weight": 0.7
+    },
+    {
+      "id": "E42",
+      "kind": "risk",
+      "key": "plan_market_1",
+      "value": 590.0106,
+      "value_high": null,
+      "unit": "price",
+      "source": "risk",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Market plan: entry 590.01, stop 558.03 (below the breakout level and the last higher low, minus the style buffer), targets 630.69; risk 5.42%, reward 6.90%, R:R 1.27 gross and 1.27 net; 150 shares (17.7% of the account) \u2014 not viable: Stop is 7.6 x ATR, wider than the 2.5 x ATR limit for this style; Net R:R 1.27 is below the 2.0 minimum for this style",
+      "weight": 0.5
+    },
+    {
+      "id": "E43",
+      "kind": "risk",
+      "key": "plan_1_stop",
+      "value": 558.0263,
+      "value_high": null,
+      "unit": "price",
+      "source": "risk",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Stop for the market plan: 558.026",
+      "weight": 0.6
+    },
+    {
+      "id": "E44",
+      "kind": "risk",
+      "key": "plan_1_rr_net",
+      "value": 1.27,
+      "value_high": null,
+      "unit": "ratio",
+      "source": "risk",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Net risk-reward for the market plan: 1.27",
+      "weight": 0.6
+    },
+    {
+      "id": "E45",
+      "kind": "risk",
+      "key": "plan_1_quantity",
+      "value": 150.0,
+      "value_high": null,
+      "unit": "count",
+      "source": "risk",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Position size in shares for the market plan: 150",
+      "weight": 0.6
+    },
+    {
+      "id": "E46",
+      "kind": "risk",
+      "key": "plan_1_target_1",
+      "value": 630.6931,
+      "value_high": null,
+      "unit": "price",
+      "source": "risk",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Target 1 for the market plan: 630.69",
+      "weight": 0.7
+    },
+    {
+      "id": "E47",
+      "kind": "context",
+      "key": "scenario_bullish",
+      "value": 588.0809,
+      "value_high": null,
+      "unit": "price",
+      "source": "risk",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Bullish scenario: daily close above 588.08, targets 630.69, invalid at 584.09",
+      "weight": 0.8
+    },
+    {
+      "id": "E48",
+      "kind": "context",
+      "key": "scenario_bullish_invalidation",
+      "value": 584.0896,
+      "value_high": null,
+      "unit": "price",
+      "source": "risk",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "The bullish scenario is invalid if price closes beyond 584.09",
+      "weight": 0.7
+    },
+    {
+      "id": "E49",
+      "kind": "context",
+      "key": "scenario_bullish_target_1",
+      "value": 630.6931,
+      "value_high": null,
+      "unit": "price",
+      "source": "risk",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Target 1 in the bullish scenario: 630.69",
+      "weight": 0.6
+    },
+    {
+      "id": "E50",
+      "kind": "context",
+      "key": "scenario_bearish",
+      "value": 560.1231,
+      "value_high": null,
+      "unit": "price",
+      "source": "risk",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Bearish scenario: daily close below 560.12, targets 537.13, 519.87, invalid at 598.40",
+      "weight": 0.8
+    },
+    {
+      "id": "E51",
+      "kind": "context",
+      "key": "scenario_bearish_invalidation",
+      "value": 598.3977,
+      "value_high": null,
+      "unit": "price",
+      "source": "risk",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "The bearish scenario is invalid if price closes beyond 598.40",
+      "weight": 0.7
+    },
+    {
+      "id": "E52",
+      "kind": "context",
+      "key": "scenario_bearish_target_1",
+      "value": 537.1274,
+      "value_high": null,
+      "unit": "price",
+      "source": "risk",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Target 1 in the bearish scenario: 537.13",
+      "weight": 0.6
+    },
+    {
+      "id": "E53",
+      "kind": "context",
+      "key": "scenario_bearish_target_2",
+      "value": 519.8744,
+      "value_high": null,
+      "unit": "price",
+      "source": "risk",
+      "tier": "A",
+      "as_of": "2025-04-23T00:00:00Z",
+      "text": "Target 2 in the bearish scenario: 519.87",
+      "weight": 0.6
+    }
+  ],
+  "warnings": [],
+  "timings": [
+    {
+      "stage": "indicators",
+      "duration_ms": 0
+    },
+    {
+      "stage": "structure",
+      "duration_ms": 1
+    },
+    {
+      "stage": "technical",
+      "duration_ms": 0
+    },
+    {
+      "stage": "smc",
+      "duration_ms": 0
+    },
+    {
+      "stage": "patterns",
+      "duration_ms": 11
+    },
+    {
+      "stage": "scoring",
+      "duration_ms": 0
+    },
+    {
+      "stage": "risk",
+      "duration_ms": 0
+    },
+    {
+      "stage": "report",
+      "duration_ms": 30
+    }
+  ],
+  "narrative_source": "template",
+  "report_markdown": "# ASCT \u00b7 1D \u00b7 Swing\n\n**Decision: BUY**\n\nSetup score 77/100 (bullish) \u00b7 uncalibrated \u00b7 data tier A \u00b7 quality 0.87\n\nAs of 2025-04-23 \u00b7 last price 590.01 \u00b7 113 bars analysed\n\nSetup score 77 with a viable plan whose trigger is already met (net R:R 10.68).\n\n**What would change it**\n\n- Risk is defined by the stop at 584.09\n\n## Technical view\n\nTrend: Bullish \u00b7 Momentum: Positive \u00b7 Volume: Confirming \u00b7 Volatility: Low (ATR 0.7%) \u00b7 Regime: trending\n\n| Indicator | Value | Signal | Status |\n|-----------|-------|--------|--------|\n| ema_9 | 580.63 | bullish | computed |\n| ema_21 | 570.05 | bullish | computed |\n| ema_50 | 557.09 | bullish | computed |\n| ema_200 | \u2014 | \u2014 | unavailable (needs 200 bars; 113 available) |\n| rsi_14 | 90.66 | bullish | computed |\n| macd_12_26_9 | 10.46 | bullish | computed |\n| adx_14 | 54.50 | bullish | computed |\n| atr_14 | 4.19 | \u2014 | computed |\n| rvol_20 | 0.79 | \u2014 | computed |\n| obv | 2850650.98 | \u2014 | computed |\n\n## Market structure\n\nStructure bullish; price in the premium of the range; 1 x bos, 1 x equal highs, 5 x fvg\n\n> Smart Money Concepts are a rule-based framework for reading price structure. The zones below are derived from price action alone; they do not reveal actual institutional orders or intentions.\n\n| Zone | Direction | Status | Price |\n|------|-----------|--------|-------|\n| bos | bullish | confirmed | 560.23 |\n| fvg | bullish | unmitigated | 586.19 \u2013 588.08 |\n| fvg | bullish | unmitigated | 581.60 \u2013 582.76 |\n| fvg | bullish | unmitigated | 574.23 \u2013 575.39 |\n| fvg | bullish | unmitigated | 571.76 \u2013 574.17 |\n| fvg | bullish | unmitigated | 568.14 \u2013 569.87 |\n| equal highs | bearish | confirmed | 559.96 \u2013 560.38 |\n\n## Patterns\n\nDetected pattern: Ascending triangle \u00b7 Confidence 53% \u00b7 Status: confirmed \u00b7 Confirmation: close above 559.82 \u00b7 Target 630.69 \u00b7 Invalidation: 553.92\n\n- **Ascending triangle** (confirmed, 53% confidence) \u2014 close above 559.82; measured target 630.69; invalid at 553.92 [E26]\n\n## Levels\n\n**Support**\n\n- 560.12 \u2013 560.66 \u00b7 strength 0.78 \u00b7 6 touches [E3]\n- 537.13 \u2013 537.13 \u00b7 strength 0.71 \u00b7 2 touches [E4]\n- 519.87 \u2013 519.87 \u00b7 strength 0.67 \u00b7 2 touches [E5]\n- 498.38 \u2013 498.38 \u00b7 strength 0.61 \u00b7 2 touches [E6]\n\n## Weight of evidence\n\n83% of the factor weight agrees with the bullish bias. ADX regime: trending.\n\n| Bullish | Bearish |\n|---------|---------|\n| \u2713 EMA alignment (+0.17) [E7] | \u2717 Location in the dealing range (-0.07) [E25] |\n| \u2713 Market structure (+0.17) [E17] | \u2717 RSI regime (-0.05) [E11] |\n| \u2713 Price vs EMA 50/200 (+0.11) [E9] |  |\n| \u2713 Volume confirmation (+0.10) [E15] |  |\n| \u2713 Room to the next level (+0.09) |  |\n| \u2713 Chart pattern (+0.06) [E26] |  |\n| \u2713 MACD momentum (+0.05) [E12] |  |\n\n## Trade plans\n\n### Pullback \u2014 viable\n\n- Entry 588.08 on touch 588.08\n- Stop 584.09 (below the fvg, minus the style buffer)\n- Targets 630.69\n- Risk 0.68% \u00b7 reward 7.25% \u00b7 R:R 10.68 gross, 10.68 net\n- Size 210 shares \u2248 123496.99 (24.7% of the account)\n\n### Market \u2014 not viable\n\n- Entry 590.01\n- Stop 558.03 (below the breakout level and the last higher low, minus the style buffer)\n- Targets 630.69\n- Risk 5.42% \u00b7 reward 6.90% \u00b7 R:R 1.27 gross, 1.27 net\n- Size 150 shares \u2248 88501.59 (17.7% of the account)\n- Why not: Stop is 7.6 x ATR, wider than the 2.5 x ATR limit for this style; Net R:R 1.27 is below the 2.0 minimum for this style\n\n## Scenarios\n\n- **Bullish (primary)** \u2014 if daily close above 588.08, then targets 630.69; invalid if price closes beyond 584.09.\n- **Bearish** \u2014 if daily close below 560.12, then targets 537.13 and 519.87; invalid if price closes beyond 598.40.\n\n## Recorded predictions\n\n- Directional bias (long), horizon 20 bars from 2025-04-23\n- Trade setup (long), horizon 20 bars from 2025-04-23, entry 588.08, stop 584.09, target 630.69\n\nThese are scored against real bars after 2025-04-23, win or lose.\n\n---\n\n*Narrative source: template \u00b7 engine 0.1.0+cfg.679b6c6b*\n\nThis is a technical analysis of price data, not investment advice. Setups fail; position sizing and the stop are what keep a wrong read survivable. Scores are uncalibrated until enough outcomes have been recorded.\n"
+}

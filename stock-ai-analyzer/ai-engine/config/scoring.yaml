@@ -1,0 +1,61 @@
+# Factor weights and decision thresholds (docs/04-ai-agent-workflow.md §5.6 and §6).
+# Documented priors, not truths: Phase 6 re-fits them on outcomes as a versioned proposal.
+version: 1
+
+factors:
+  trend_ema_alignment:
+    label: "EMA alignment"
+    weight: 0.15
+    trend_type: true
+  price_location:
+    label: "Price vs EMA 50/200"
+    weight: 0.10
+    trend_type: true
+  market_structure:
+    label: "Market structure"
+    weight: 0.15
+    trend_type: true
+  momentum_rsi:
+    label: "RSI regime"
+    weight: 0.10
+    trend_type: false
+  momentum_macd:
+    label: "MACD momentum"
+    weight: 0.08
+    trend_type: false
+  volume_confirmation:
+    label: "Volume confirmation"
+    weight: 0.12
+    trend_type: false
+  pattern:
+    label: "Chart pattern"
+    weight: 0.12
+    trend_type: false
+  room_to_move:
+    label: "Room to the next level"
+    weight: 0.10
+    trend_type: false
+  range_location:
+    label: "Location in the dealing range"
+    weight: 0.08
+    trend_type: false
+
+adx:
+  trending_above: 25.0
+  ranging_below: 20.0
+  trend_factor_multiplier_trending: 1.2
+  trend_factor_multiplier_ranging: 0.6
+
+bias:
+  bullish_at_or_above: 60
+  bearish_at_or_below: 40
+
+decision:
+  avoid_at_or_below: 40
+  buy_at_or_above: 60
+  sell_score_at_or_below: 40   # with a bearish CHoCH, while holding
+
+tier_quality_cap:
+  A: 1.00
+  B: 0.85
+  C: 0.00

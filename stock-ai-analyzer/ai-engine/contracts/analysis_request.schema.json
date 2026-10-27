@@ -1,0 +1,411 @@
+{
+  "$defs": {
+    "AccountSettings": {
+      "additionalProperties": false,
+      "description": "Sizing inputs, in the exchange's currency and share units.",
+      "properties": {
+        "currency": {
+          "default": "NPR",
+          "title": "Currency",
+          "type": "string"
+        },
+        "equity": {
+          "exclusiveMinimum": 0,
+          "title": "Equity",
+          "type": "number"
+        },
+        "lot_size": {
+          "default": 10,
+          "minimum": 1,
+          "title": "Lot Size",
+          "type": "integer"
+        },
+        "max_position_pct": {
+          "default": 25.0,
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "title": "Max Position Pct",
+          "type": "number"
+        },
+        "risk_pct": {
+          "default": 1.0,
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "title": "Risk Pct",
+          "type": "number"
+        }
+      },
+      "required": [
+        "equity"
+      ],
+      "title": "AccountSettings",
+      "type": "object"
+    },
+    "Bar": {
+      "additionalProperties": false,
+      "description": "One OHLCV bar. Timestamps are UTC instants (daily bars sit at 00:00 UTC).",
+      "properties": {
+        "close": {
+          "exclusiveMinimum": 0,
+          "title": "Close",
+          "type": "number"
+        },
+        "date": {
+          "format": "date-time",
+          "title": "Date",
+          "type": "string"
+        },
+        "high": {
+          "exclusiveMinimum": 0,
+          "title": "High",
+          "type": "number"
+        },
+        "low": {
+          "exclusiveMinimum": 0,
+          "title": "Low",
+          "type": "number"
+        },
+        "open": {
+          "exclusiveMinimum": 0,
+          "title": "Open",
+          "type": "number"
+        },
+        "volume": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Volume"
+        }
+      },
+      "required": [
+        "date",
+        "open",
+        "high",
+        "low",
+        "close"
+      ],
+      "title": "Bar",
+      "type": "object"
+    },
+    "FeeSchedule": {
+      "additionalProperties": false,
+      "description": "Round-trip cost as a percentage of traded value (broker commission, SEBON, DP fee).",
+      "properties": {
+        "buy_pct": {
+          "default": 0.0,
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Buy Pct",
+          "type": "number"
+        },
+        "sell_pct": {
+          "default": 0.0,
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Sell Pct",
+          "type": "number"
+        }
+      },
+      "title": "FeeSchedule",
+      "type": "object"
+    },
+    "HistoricalContextItem": {
+      "additionalProperties": false,
+      "description": "A statistic about the user's own past outcomes, supplied by Laravel (docs/04 \u00a710).\n\nIt reaches the report as evidence, so the analyst can cite it and the grounding guardrail can\ncheck it, exactly like a computed number. Phase 6 fills these in; until then the list is empty.",
+      "properties": {
+        "key": {
+          "title": "Key",
+          "type": "string"
+        },
+        "sample_size": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Sample Size",
+          "type": "integer"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "unit": {
+          "default": "none",
+          "enum": [
+            "price",
+            "percent",
+            "ratio",
+            "count",
+            "score",
+            "bars",
+            "none"
+          ],
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "required": [
+        "key",
+        "text"
+      ],
+      "title": "HistoricalContextItem",
+      "type": "object"
+    },
+    "Position": {
+      "additionalProperties": false,
+      "properties": {
+        "entry_price": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entry Price"
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quantity"
+        },
+        "status": {
+          "default": "none",
+          "enum": [
+            "none",
+            "holding"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "stop_price": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stop Price"
+        }
+      },
+      "title": "Position",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "What Laravel sends for one analysis (docs/05-api-spec.md).",
+  "properties": {
+    "account": {
+      "$ref": "#/$defs/AccountSettings"
+    },
+    "analysis_id": {
+      "title": "Analysis Id",
+      "type": "string"
+    },
+    "as_of": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "As Of"
+    },
+    "bars": {
+      "items": {
+        "$ref": "#/$defs/Bar"
+      },
+      "title": "Bars",
+      "type": "array"
+    },
+    "company_name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Company Name"
+    },
+    "correlation_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Correlation Id"
+    },
+    "declared_symbol": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Declared Symbol"
+    },
+    "exchange": {
+      "default": "NEPSE",
+      "title": "Exchange",
+      "type": "string"
+    },
+    "fees": {
+      "$ref": "#/$defs/FeeSchedule"
+    },
+    "force_tier": {
+      "anyOf": [
+        {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Force Tier"
+    },
+    "historical_context": {
+      "items": {
+        "$ref": "#/$defs/HistoricalContextItem"
+      },
+      "title": "Historical Context",
+      "type": "array"
+    },
+    "image_path": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Image Path"
+    },
+    "position": {
+      "$ref": "#/$defs/Position"
+    },
+    "schema_version": {
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "skip_symbol_check": {
+      "default": false,
+      "title": "Skip Symbol Check",
+      "type": "boolean"
+    },
+    "symbol": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Symbol"
+    },
+    "symbol_universe": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Symbol Universe",
+      "type": "array"
+    },
+    "timeframe": {
+      "default": "1D",
+      "enum": [
+        "15m",
+        "1h",
+        "4h",
+        "1D",
+        "1W"
+      ],
+      "title": "Timeframe",
+      "type": "string"
+    },
+    "trading_style": {
+      "default": "swing",
+      "enum": [
+        "intraday",
+        "swing",
+        "positional",
+        "investing"
+      ],
+      "title": "Trading Style",
+      "type": "string"
+    },
+    "user_thesis": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "User Thesis"
+    }
+  },
+  "required": [
+    "analysis_id",
+    "account"
+  ],
+  "title": "AnalysisRequest",
+  "type": "object"
+}

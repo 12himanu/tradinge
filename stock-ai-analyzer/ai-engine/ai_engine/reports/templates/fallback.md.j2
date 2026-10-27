@@ -1,0 +1,163 @@
+{#
+  Template report. Rule for this file: block tags ({% ... %}) live on their own line, because
+  `trim_blocks` swallows the newline that follows them. Anything conditional inside a line of
+  prose uses an inline expression instead.
+-#}
+{% set tier = result.tier %}
+# {{ result.symbol or "Unresolved symbol" }} · {{ result.timeframe }} · {{ result.trading_style|capitalize }}
+
+**Decision: {{ result.decision.action|upper }}**{{ " (limited: not enough verified data for a numeric plan)" if result.decision.limited else "" }}
+
+{% if result.setup_score is not none %}
+Setup score {{ result.setup_score }}/100 ({{ result.bias }}) · uncalibrated · data tier {{ tier }} · quality {{ "%.2f"|format(result.data_quality) }}
+{% else %}
+Data tier {{ tier }} · no setup score is claimed at this tier
+{% endif %}
+{% if result.as_of %}
+
+As of {{ result.as_of.strftime("%Y-%m-%d") }} · last price {{ result.last_price|price(tier) }} · {{ result.bar_count }} bars analysed
+{% endif %}
+
+{{ result.decision.rationale }}
+{% if result.decision.conditions %}
+
+**What would change it**
+
+{% for condition in result.decision.conditions %}
+- {{ condition }}
+{% endfor %}
+{% endif %}
+{% if unrealized_r is not none %}
+
+Open position: {{ "%+.2f"|format(unrealized_r) }}R unrealised.
+{% endif %}
+{% if technical_summary %}
+
+## Technical view
+
+{{ technical_summary }}
+
+| Indicator | Value | Signal | Status |
+|-----------|-------|--------|--------|
+{% for indicator in result.indicators %}
+| {{ indicator.key }} | {{ "%.2f"|format(indicator.value) if indicator.value is not none else "—" }} | {{ indicator.signal or "—" }} | {{ indicator.status }}{{ " (%s)"|format(indicator.unavailable_reason) if indicator.unavailable_reason else "" }} |
+{% endfor %}
+{% endif %}
+{% if result.smc %}
+
+## Market structure
+
+{{ smc_summary }}
+
+> {{ smc_note }}
+{% if result.smc.events %}
+
+| Zone | Direction | Status | Price |
+|------|-----------|--------|-------|
+{% for event in result.smc.events %}
+| {{ event.type|replace("_", " ") }} | {{ event.direction }} | {{ event.status }} | {{ zone_text(event, tier) }} |
+{% endfor %}
+{% endif %}
+{% endif %}
+{% if classic_patterns %}
+
+## Patterns
+
+{{ pattern_summary }}
+
+{% for pattern in classic_patterns %}
+- **{{ pattern.type|replace("_", " ")|capitalize }}** ({{ pattern.status }}, {{ "%.0f"|format(pattern.confidence * 100) }}% confidence){{ " — %s"|format(pattern.confirmation_rule|lower) if pattern.confirmation_rule else "" }}{{ "; measured target %s"|format(pattern.measured_target|price(tier)) if pattern.measured_target is not none else "" }}{{ "; invalid at %s"|format(pattern.invalidation_price|price(tier)) if pattern.invalidation_price is not none else "" }}{{ " [%s]"|format(pattern.evidence_id) if pattern.evidence_id else "" }}
+{% endfor %}
+{% if candlesticks %}
+
+At a level: {% for candle in candlesticks %}{{ candle.type|replace("_", " ") }}{{ ", " if not loop.last else "" }}{% endfor %}.
+{% endif %}
+{% endif %}
+{% if supports or resistances %}
+
+## Levels
+{% if resistances %}
+
+**Resistance**
+
+{% for level in resistances %}
+- {{ level.price_low|price(tier) }} – {{ level.price_high|price(tier) }} · strength {{ "%.2f"|format(level.strength) }} · {{ level.touches }} touches{{ " [%s]"|format(level.evidence_id) if level.evidence_id else "" }}
+{% endfor %}
+{% endif %}
+{% if supports %}
+
+**Support**
+
+{% for level in supports %}
+- {{ level.price_low|price(tier) }} – {{ level.price_high|price(tier) }} · strength {{ "%.2f"|format(level.strength) }} · {{ level.touches }} touches{{ " [%s]"|format(level.evidence_id) if level.evidence_id else "" }}
+{% endfor %}
+{% endif %}
+{% endif %}
+{% if bullish_lines or bearish_lines %}
+
+## Weight of evidence
+{% if result.score %}
+
+{{ "%.0f"|format(result.score.evidence_agreement * 100) }}% of the factor weight agrees with the {{ result.score.bias }} bias. ADX regime: {{ result.score.adx_regime }}.
+{% endif %}
+
+| Bullish | Bearish |
+|---------|---------|
+{% for row in range([bullish_lines|length, bearish_lines|length]|max) %}
+| {{ bullish_lines[row] if row < bullish_lines|length else "" }} | {{ bearish_lines[row] if row < bearish_lines|length else "" }} |
+{% endfor %}
+{% if result.score and result.score.dropped_factors %}
+
+Dropped for lack of data, weight redistributed: {{ result.score.dropped_factors|join(", ") }}.
+{% endif %}
+{% endif %}
+{% if result.trade_plans %}
+
+## Trade plans
+{% for plan in result.trade_plans %}
+
+### {{ plan.entry_type|capitalize }} — {{ "viable" if plan.viable else "not viable" }}
+
+- Entry {{ plan.entry_price|price(tier) }}{{ " on %s %s"|format(plan.trigger_type|replace("_", " "), plan.trigger_price|price(tier)) if plan.trigger_price is not none else "" }}
+- Stop {{ plan.stop_price|price(tier) }} ({{ plan.stop_basis }})
+- Targets {% for target in plan.targets %}{{ target|price(tier) }}{{ ", " if not loop.last else "" }}{% endfor %}
+
+- Risk {{ "%.2f"|format(plan.risk_pct) }}% · reward {{ "%.2f"|format(plan.reward_pct) }}% · R:R {{ "%.2f"|format(plan.rr_gross) }} gross, {{ "%.2f"|format(plan.rr_net) }} net
+- Size {{ plan.quantity }} shares ≈ {{ "%.2f"|format(plan.position_value) }} ({{ "%.1f"|format(plan.position_pct) }}% of the account)
+{% if not plan.viable %}
+- Why not: {{ plan.reasons|join("; ") }}{{ " — viable at an entry of %s"|format(plan.viable_at_price|price(tier)) if plan.viable_at_price is not none else "" }}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if result.scenarios %}
+
+## Scenarios
+
+{% for scenario in result.scenarios %}
+- **{{ scenario.name|capitalize }}{{ " (primary)" if scenario.primary else "" }}** — if {{ scenario.trigger|lower }}, then targets {% for target in scenario.targets %}{{ target|price(tier) }}{{ " and " if not loop.last else "" }}{% endfor %}; invalid if price closes beyond {{ scenario.invalidation|price(tier) }}.
+{% endfor %}
+{% endif %}
+{% if result.predictions %}
+
+## Recorded predictions
+
+{% for prediction in result.predictions %}
+- {{ prediction.kind|replace("_", " ")|capitalize }} ({{ prediction.direction }}), horizon {{ prediction.horizon_bars }} bars from {{ prediction.as_of.strftime("%Y-%m-%d") }}{{ ", entry %s, stop %s"|format(prediction.entry_price|price(tier), prediction.stop_price|price(tier)) if prediction.entry_price is not none else "" }}{{ ", target %s"|format(prediction.target_price_1|price(tier)) if prediction.target_price_1 is not none else "" }}
+{% endfor %}
+
+These are scored against real bars after {{ result.as_of.strftime("%Y-%m-%d") }}, win or lose.
+{% endif %}
+{% if result.warnings %}
+
+## Caveats
+
+{% for warning in result.warnings %}
+- {{ warning }}
+{% endfor %}
+{% endif %}
+
+---
+
+*Narrative source: {{ result.narrative_source or "template" }} · engine {{ result.engine_version }}*
+
+{{ disclaimer }}
