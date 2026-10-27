@@ -1,0 +1,70 @@
+[project]
+name = "ai-engine"
+version = "0.1.0"
+description = "Stock AI Analyzer analysis engine: vision, technical analysis, scoring, risk and report generation."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "fastapi>=0.141.1",
+    "httpx>=0.28.1",
+    "jinja2>=3.1.6",
+    "numpy>=2.3.0",
+    "pydantic>=2.13.5",
+    "pydantic-settings>=2.15.0",
+    "pyyaml>=6.0.3",
+    "structlog>=26.1.0",
+    "uvicorn[standard]>=0.52.4",
+]
+
+[dependency-groups]
+dev = [
+    "anyio>=4.15.1",
+    "mypy>=2.3.1",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.16.7",
+    # Reference implementation for the indicator parity gate; tests skip if it is missing.
+    "ta-lib>=0.6.0",
+    "types-pyyaml>=6.0.12.20260906",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["ai_engine"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "N", "S", "SIM", "RUF", "ASYNC", "PT"]
+ignore = ["S101"]  # assert is fine in tests
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S105", "S106"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["pydantic.mypy"]
+files = ["ai_engine", "scripts", "tests"]
+
+[[tool.mypy.overrides]]
+module = ["respx.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = [
+  "ollama: requires a running Ollama server (set RUN_OLLAMA_TESTS=1)",
+]
+
+[tool.coverage.report]
+# Phase 4A exit gate: the deterministic analysis and the agents that wrap it.
+fail_under = 90
+show_missing = true
+exclude_also = ["if TYPE_CHECKING:", "raise NotImplementedError"]

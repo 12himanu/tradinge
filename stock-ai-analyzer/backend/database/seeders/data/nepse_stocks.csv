@@ -1,0 +1,23 @@
+symbol,name,sector,instrument_type
+NEPSE,NEPSE Index,Index,index
+NABIL,Nabil Bank Limited,Commercial Banks,equity
+NICA,NIC Asia Bank Limited,Commercial Banks,equity
+EBL,Everest Bank Limited,Commercial Banks,equity
+GBIME,Global IME Bank Limited,Commercial Banks,equity
+HBL,Himalayan Bank Limited,Commercial Banks,equity
+NMB,NMB Bank Limited,Commercial Banks,equity
+SCB,Standard Chartered Bank Nepal Limited,Commercial Banks,equity
+ADBL,Agricultural Development Bank Limited,Commercial Banks,equity
+NTC,Nepal Doorsanchar Company Limited,Others,equity
+HDL,Himalayan Distillery Limited,Manufacturing And Processing,equity
+UNL,Unilever Nepal Limited,Manufacturing And Processing,equity
+SHIVM,Shivam Cements Limited,Manufacturing And Processing,equity
+UPPER,Upper Tamakoshi Hydropower Limited,Hydro Power,equity
+CHCL,Chilime Hydropower Company Limited,Hydro Power,equity
+API,Api Power Company Limited,Hydro Power,equity
+NLIC,Nepal Life Insurance Company Limited,Life Insurance,equity
+SHL,Soaltee Hotel Limited,Hotels And Tourism,equity
+CIT,Citizen Investment Trust,Investment,equity
+NIFRA,Nepal Infrastructure Bank Limited,Investment,equity
+HIDCL,Hydroelectricity Investment and Development Company Limited,Investment,equity
+BBC,Bishal Bazar Company Limited,Tradings,equity

@@ -1,0 +1,19 @@
+# Model profiles by hardware tier (docs/04-ai-agent-workflow.md §8).
+# `digest: null` accepts any installed digest. Pin digests after the Phase 2 benchmark (P2-11)
+# so every analysis records exactly which model weights produced it.
+profiles:
+  gpu_4gb:        # RTX 3050 Laptop 4 GB (this machine) — one model loaded at a time
+    vision: { tag: "qwen2.5vl:3b", digest: null }
+    # The analyst prompt is ~1.4k tokens and its report ~1k, so 4k is ample. A wider window buys
+    # nothing here and costs KV cache this GPU does not have: measured 14.3 tok/s at 4k against
+    # 8.0 at 16k on the same prompt.
+    text:   { tag: "qwen3:4b", digest: null, num_ctx: 4096 }
+  gpu_8gb:
+    vision: { tag: "qwen2.5vl:7b", digest: null }
+    text:   { tag: "qwen3:8b", digest: null, num_ctx: 8192 }
+  gpu_16gb:
+    vision: { tag: "qwen2.5vl:7b", digest: null }
+    text:   { tag: "qwen3:14b", digest: null, num_ctx: 16384 }
+  cpu:
+    vision: { tag: "qwen2.5vl:3b", digest: null }
+    text:   { tag: "qwen3:4b", digest: null, num_ctx: 4096 }

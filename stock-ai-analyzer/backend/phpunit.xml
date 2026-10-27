@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory>tests/Feature</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>app</directory>
+        </include>
+    </source>
+    <php>
+        <!-- Tests run against a dedicated PostgreSQL database (CHECK constraints need the real engine). -->
+        <!-- Docker Compose injects DB/engine/owner values as real environment variables, which Laravel reads -->
+        <!-- from $_SERVER before $_ENV. <server> entries overwrite them; <env force> covers putenv/$_ENV. -->
+        <!-- Without both, the suite would run RefreshDatabase against the development database. -->
+        <server name="DB_CONNECTION" value="pgsql"/>
+        <server name="DB_DATABASE" value="stock_ai_testing"/>
+        <server name="ENGINE_URL" value="http://engine.test"/>
+        <server name="ENGINE_HMAC_SECRET" value="test-secret-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"/>
+        <server name="CHARTS_ROOT" value="storage/framework/testing/charts"/>
+        <server name="OWNER_EMAIL" value=""/>
+        <server name="OWNER_PASSWORD" value=""/>
+        <env name="APP_ENV" value="testing" force="true"/>
+        <env name="APP_MAINTENANCE_DRIVER" value="file"/>
+        <env name="BCRYPT_ROUNDS" value="4"/>
+        <env name="BROADCAST_CONNECTION" value="null"/>
+        <env name="CACHE_STORE" value="array" force="true"/>
+        <env name="DB_CONNECTION" value="pgsql" force="true"/>
+        <env name="DB_DATABASE" value="stock_ai_testing" force="true"/>
+        <env name="DB_URL" value=""/>
+        <env name="MAIL_MAILER" value="array"/>
+        <env name="QUEUE_CONNECTION" value="sync" force="true"/>
+        <env name="SESSION_DRIVER" value="array" force="true"/>
+        <env name="LOG_STACK" value="single" force="true"/>
+        <env name="ENGINE_URL" value="http://engine.test" force="true"/>
+        <env name="ENGINE_HMAC_SECRET" value="test-secret-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" force="true"/>
+        <env name="OWNER_EMAIL" value="" force="true"/>
+        <env name="OWNER_PASSWORD" value="" force="true"/>
+        <env name="PULSE_ENABLED" value="false"/>
+        <env name="TELESCOPE_ENABLED" value="false"/>
+        <env name="NIGHTWATCH_ENABLED" value="false"/>
+    </php>
+</phpunit>

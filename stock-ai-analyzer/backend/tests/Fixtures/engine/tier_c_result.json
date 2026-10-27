@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "analysis_id": "01JEXAMPLEANALYSISID0000001",
+  "engine_version": "0.1.0+cfg.679b6c6b",
+  "status": "partial",
+  "symbol": "TREND",
+  "timeframe": "1D",
+  "trading_style": "swing",
+  "tier": "C",
+  "data_quality": 0.0,
+  "as_of": "2025-02-09T00:00:00Z",
+  "last_price": 523.3588,
+  "bar_count": 40,
+  "bias": null,
+  "setup_score": null,
+  "decision": {
+    "action": "wait",
+    "rule_id": 1,
+    "conditions": [
+      "Confirm the symbol and timeframe, or upload price data, then re-run"
+    ],
+    "invalidation": null,
+    "limited": true,
+    "rationale": "No numeric plan is possible because only the screenshot could be read (Tier C)."
+  },
+  "score": null,
+  "indicators": [],
+  "patterns": [],
+  "levels": [],
+  "smc": null,
+  "scenarios": [],
+  "trade_plans": [],
+  "predictions": [],
+  "evidence": [],
+  "warnings": [
+    "Only 40 bars were supplied; at least 60 are needed for a numeric analysis, so this run is limited to a qualitative read."
+  ],
+  "timings": [],
+  "narrative_source": "template",
+  "report_markdown": "# TREND \u00b7 1D \u00b7 Swing\n\n**Decision: WAIT** (limited: not enough verified data for a numeric plan)\n\nData tier C \u00b7 no setup score is claimed at this tier\n\nAs of 2025-02-09 \u00b7 last price 523.36 \u00b7 40 bars analysed\n\nNo numeric plan is possible because only the screenshot could be read (Tier C).\n\n**What would change it**\n\n- Confirm the symbol and timeframe, or upload price data, then re-run\n\n## Caveats\n\n- Only 40 bars were supplied; at least 60 are needed for a numeric analysis, so this run is limited to a qualitative read.\n\n---\n\n*Narrative source: template \u00b7 engine 0.1.0+cfg.679b6c6b*\n\nThis is a technical analysis of price data, not investment advice. Setups fail; position sizing and the stop are what keep a wrong read survivable. Scores are uncalibrated until enough outcomes have been recorded.\n"
+}

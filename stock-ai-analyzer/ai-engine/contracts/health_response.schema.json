@@ -1,0 +1,140 @@
+{
+  "$defs": {
+    "ModelStatus": {
+      "properties": {
+        "expected_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Expected Digest"
+        },
+        "installed_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Installed Digest"
+        },
+        "role": {
+          "enum": [
+            "vision",
+            "text"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "present",
+            "missing",
+            "digest_mismatch",
+            "unknown"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "tag": {
+          "title": "Tag",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "tag",
+        "expected_digest",
+        "installed_digest",
+        "status"
+      ],
+      "title": "ModelStatus",
+      "type": "object"
+    },
+    "OllamaHealth": {
+      "properties": {
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "reachable": {
+          "title": "Reachable",
+          "type": "boolean"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Version"
+        }
+      },
+      "required": [
+        "reachable"
+      ],
+      "title": "OllamaHealth",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "engine_version": {
+      "title": "Engine Version",
+      "type": "string"
+    },
+    "model_profile": {
+      "title": "Model Profile",
+      "type": "string"
+    },
+    "models": {
+      "items": {
+        "$ref": "#/$defs/ModelStatus"
+      },
+      "title": "Models",
+      "type": "array"
+    },
+    "ollama": {
+      "$ref": "#/$defs/OllamaHealth"
+    },
+    "status": {
+      "enum": [
+        "ok",
+        "degraded"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "storage_readable": {
+      "title": "Storage Readable",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "status",
+    "engine_version",
+    "model_profile",
+    "ollama",
+    "models",
+    "storage_readable"
+  ],
+  "title": "HealthResponse",
+  "type": "object"
+}

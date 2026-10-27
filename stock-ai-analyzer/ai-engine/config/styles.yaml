@@ -1,0 +1,47 @@
+# Trading-style profiles (docs/04-ai-agent-workflow.md §5.7).
+# These are documented priors, not tuned values. Phase 6 may propose changes from outcomes.
+styles:
+  intraday:
+    timeframes: ["15m", "1h"]
+    horizon_bars: 30
+    min_horizon_bars: 5
+    stop_buffer_atr: 0.3
+    max_stop_atr: 1.5
+    max_stop_pct: 3.0
+    min_rr_net: 1.5
+    swing_lookback_bars: 120
+  swing:
+    timeframes: ["1D"]
+    horizon_bars: 20
+    min_horizon_bars: 5
+    stop_buffer_atr: 0.5
+    max_stop_atr: 2.5
+    max_stop_pct: 8.0
+    min_rr_net: 2.0
+    swing_lookback_bars: 250
+  positional:
+    timeframes: ["1D", "1W"]
+    horizon_bars: 60
+    min_horizon_bars: 20
+    stop_buffer_atr: 1.0
+    max_stop_atr: 3.5
+    max_stop_pct: 15.0
+    min_rr_net: 2.5
+    swing_lookback_bars: 400
+  investing:
+    timeframes: ["1W"]
+    horizon_bars: 52
+    min_horizon_bars: 26
+    stop_buffer_atr: 1.0
+    max_stop_atr: 4.0
+    max_stop_pct: 20.0
+    min_rr_net: 3.0
+    swing_lookback_bars: 400
+
+risk:
+  # Entry construction
+  breakout_entry_atr_offset: 0.1   # entry = trigger + this x ATR
+  pullback_max_distance_atr: 2.0   # a pullback zone must sit within this x ATR of price
+  market_entry_max_age_bars: 2     # "at market" only if a trigger fired this recently
+  market_entry_max_distance_atr: 1.0
+  target_min_distance_atr: 1.0     # T1 must be at least this far above the entry

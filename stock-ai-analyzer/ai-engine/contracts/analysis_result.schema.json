@@ -1,0 +1,2016 @@
+{
+  "$defs": {
+    "AnalystNarrative": {
+      "additionalProperties": false,
+      "description": "Everything the LLM writes for one analysis, and nothing else.\n\nSent to Ollama as the structured-output schema, so the model is constrained to this shape\nbefore a guardrail ever looks at it.",
+      "properties": {
+        "decision_explanation": {
+          "description": "Explain the fixed decision. Do not change or soften it.",
+          "minLength": 1,
+          "title": "Decision Explanation",
+          "type": "string"
+        },
+        "factors_bearish": {
+          "description": "One line each.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Factors Bearish",
+          "type": "array"
+        },
+        "factors_bullish": {
+          "description": "One line each.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Factors Bullish",
+          "type": "array"
+        },
+        "headline": {
+          "description": "One sentence. No number that is not evidence.",
+          "minLength": 1,
+          "title": "Headline",
+          "type": "string"
+        },
+        "market_structure": {
+          "$ref": "#/$defs/NarrativeSection"
+        },
+        "opinion": {
+          "$ref": "#/$defs/Opinion"
+        },
+        "pattern": {
+          "$ref": "#/$defs/NarrativeSection"
+        },
+        "scenarios": {
+          "description": "Exactly two: one named 'bullish' and one named 'bearish'.",
+          "items": {
+            "$ref": "#/$defs/ScenarioNarrative"
+          },
+          "minItems": 2,
+          "title": "Scenarios",
+          "type": "array"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "smart_money": {
+          "$ref": "#/$defs/NarrativeSection"
+        },
+        "technical_view": {
+          "$ref": "#/$defs/NarrativeSection"
+        },
+        "user_thesis_review": {
+          "$ref": "#/$defs/ThesisReview",
+          "description": "The user's thesis weighed. Leave both lists empty if they gave none."
+        }
+      },
+      "required": [
+        "headline",
+        "decision_explanation",
+        "market_structure",
+        "technical_view",
+        "pattern",
+        "smart_money",
+        "scenarios",
+        "opinion",
+        "user_thesis_review"
+      ],
+      "title": "AnalystNarrative",
+      "type": "object"
+    },
+    "BaseRate": {
+      "additionalProperties": false,
+      "description": "How a signal resolved the previous times it fired on this instrument.\n\nA measurement of the past, not a forecast, and never a substitute for a calibrated probability:\n`sample_size` is part of the reading, because a 70% rate on six occurrences is a coincidence\nwith a percent sign on it. See ai_engine/analysis/base_rates.py for the method.",
+      "properties": {
+        "adverse": {
+          "minimum": 0,
+          "title": "Adverse",
+          "type": "integer"
+        },
+        "adverse_rate": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Adverse Rate",
+          "type": "number"
+        },
+        "barrier_atr": {
+          "description": "Barrier distance in ATR at the signal bar",
+          "exclusiveMinimum": 0,
+          "title": "Barrier Atr",
+          "type": "number"
+        },
+        "category": {
+          "enum": [
+            "classic",
+            "candlestick",
+            "smc"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "direction": {
+          "enum": [
+            "bullish",
+            "bearish",
+            "neutral"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "favourable": {
+          "minimum": 0,
+          "title": "Favourable",
+          "type": "integer"
+        },
+        "favourable_rate": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Favourable Rate",
+          "type": "number"
+        },
+        "horizon_bars": {
+          "exclusiveMinimum": 0,
+          "title": "Horizon Bars",
+          "type": "integer"
+        },
+        "median_barrier_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "That barrier as a % of price",
+          "title": "Median Barrier Pct"
+        },
+        "median_bars_to_resolution": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Median Bars To Resolution"
+        },
+        "sample_size": {
+          "description": "Occurrences with a full horizon of bars after them",
+          "minimum": 0,
+          "title": "Sample Size",
+          "type": "integer"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "unresolved": {
+          "description": "Neither barrier reached within the horizon",
+          "minimum": 0,
+          "title": "Unresolved",
+          "type": "integer"
+        },
+        "unresolved_rate": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Unresolved Rate",
+          "type": "number"
+        }
+      },
+      "required": [
+        "category",
+        "type",
+        "direction",
+        "sample_size",
+        "favourable",
+        "adverse",
+        "unresolved",
+        "favourable_rate",
+        "adverse_rate",
+        "unresolved_rate",
+        "horizon_bars",
+        "barrier_atr"
+      ],
+      "title": "BaseRate",
+      "type": "object"
+    },
+    "DealingRange": {
+      "additionalProperties": false,
+      "properties": {
+        "equilibrium": {
+          "title": "Equilibrium",
+          "type": "number"
+        },
+        "high": {
+          "title": "High",
+          "type": "number"
+        },
+        "low": {
+          "title": "Low",
+          "type": "number"
+        },
+        "position": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Position",
+          "type": "number"
+        },
+        "zone": {
+          "enum": [
+            "discount",
+            "equilibrium",
+            "premium"
+          ],
+          "title": "Zone",
+          "type": "string"
+        }
+      },
+      "required": [
+        "low",
+        "high",
+        "equilibrium",
+        "position",
+        "zone"
+      ],
+      "title": "DealingRange",
+      "type": "object"
+    },
+    "Decision": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "enum": [
+            "buy",
+            "wait",
+            "hold",
+            "sell",
+            "avoid"
+          ],
+          "title": "Action",
+          "type": "string"
+        },
+        "conditions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Conditions",
+          "type": "array"
+        },
+        "invalidation": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Invalidation"
+        },
+        "limited": {
+          "default": false,
+          "title": "Limited",
+          "type": "boolean"
+        },
+        "rationale": {
+          "default": "",
+          "title": "Rationale",
+          "type": "string"
+        },
+        "rule_id": {
+          "title": "Rule Id",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "action",
+        "rule_id"
+      ],
+      "title": "Decision",
+      "type": "object"
+    },
+    "EvidenceItem": {
+      "additionalProperties": false,
+      "description": "A fact produced by a deterministic stage. The analyst may only cite these.",
+      "properties": {
+        "as_of": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "As Of"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "key": {
+          "title": "Key",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "indicator",
+            "level",
+            "pattern",
+            "smc",
+            "volume",
+            "structure",
+            "risk",
+            "factor",
+            "context",
+            "historical"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "tier": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ],
+          "title": "Tier",
+          "type": "string"
+        },
+        "unit": {
+          "default": "none",
+          "enum": [
+            "price",
+            "percent",
+            "ratio",
+            "count",
+            "score",
+            "bars",
+            "none"
+          ],
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        },
+        "value_high": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value High"
+        },
+        "weight": {
+          "default": 0.0,
+          "minimum": 0,
+          "title": "Weight",
+          "type": "number"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "key",
+        "source",
+        "tier",
+        "text"
+      ],
+      "title": "EvidenceItem",
+      "type": "object"
+    },
+    "FactorScore": {
+      "additionalProperties": false,
+      "properties": {
+        "available": {
+          "default": true,
+          "title": "Available",
+          "type": "boolean"
+        },
+        "contribution": {
+          "title": "Contribution",
+          "type": "number"
+        },
+        "effective_weight": {
+          "minimum": 0,
+          "title": "Effective Weight",
+          "type": "number"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "key": {
+          "title": "Key",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "value": {
+          "maximum": 1,
+          "minimum": -1,
+          "title": "Value",
+          "type": "number"
+        },
+        "weight": {
+          "minimum": 0,
+          "title": "Weight",
+          "type": "number"
+        }
+      },
+      "required": [
+        "key",
+        "label",
+        "value",
+        "weight",
+        "effective_weight",
+        "contribution",
+        "reason"
+      ],
+      "title": "FactorScore",
+      "type": "object"
+    },
+    "HorizonOutlook": {
+      "additionalProperties": false,
+      "description": "What one horizon has been worth on this instrument, measured (ai_engine/analysis/outlook.py).\n\nA description of the past, never a forecast of the next move: `up_rate` is the share of N-bar\nmoves that closed higher, and the band is the 10th-90th percentile of them. One move in five\nfinished outside that band. Everything is null when `sample` is too small to say anything.",
+      "properties": {
+        "band_high": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Band High"
+        },
+        "band_low": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Band Low"
+        },
+        "bars": {
+          "exclusiveMinimum": 0,
+          "title": "Bars",
+          "type": "integer"
+        },
+        "base_rates": {
+          "items": {
+            "$ref": "#/$defs/BaseRate"
+          },
+          "title": "Base Rates",
+          "type": "array"
+        },
+        "high_move_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "High Move Pct"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "low_move_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Low Move Pct"
+        },
+        "median_move_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Median Move Pct"
+        },
+        "reference_price": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reference Price"
+        },
+        "sample": {
+          "description": "Completed N-bar moves the numbers were measured on",
+          "minimum": 0,
+          "title": "Sample",
+          "type": "integer"
+        },
+        "typical_move_pct": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Median absolute move: the size of an ordinary one",
+          "title": "Typical Move Pct"
+        },
+        "up_rate": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Up Rate"
+        }
+      },
+      "required": [
+        "bars",
+        "label",
+        "sample"
+      ],
+      "title": "HorizonOutlook",
+      "type": "object"
+    },
+    "IndicatorResult": {
+      "additionalProperties": false,
+      "properties": {
+        "components": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "number"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Components"
+        },
+        "evidence_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence Id"
+        },
+        "key": {
+          "title": "Key",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "params": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Params",
+          "type": "object"
+        },
+        "signal": {
+          "anyOf": [
+            {
+              "enum": [
+                "bullish",
+                "bearish",
+                "neutral"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Signal"
+        },
+        "status": {
+          "enum": [
+            "computed",
+            "vision_read",
+            "unavailable"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "unavailable_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unavailable Reason"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "required": [
+        "key",
+        "name",
+        "status"
+      ],
+      "title": "IndicatorResult",
+      "type": "object"
+    },
+    "Level": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence Id"
+        },
+        "last_touch": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Last Touch"
+        },
+        "price_high": {
+          "exclusiveMinimum": 0,
+          "title": "Price High",
+          "type": "number"
+        },
+        "price_low": {
+          "exclusiveMinimum": 0,
+          "title": "Price Low",
+          "type": "number"
+        },
+        "source": {
+          "default": "pivots",
+          "enum": [
+            "pivots",
+            "volume_profile",
+            "smc",
+            "ocr_label"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "strength": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Strength",
+          "type": "number"
+        },
+        "touches": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Touches",
+          "type": "integer"
+        },
+        "type": {
+          "enum": [
+            "support",
+            "resistance",
+            "liquidity",
+            "equilibrium",
+            "premium",
+            "discount"
+          ],
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "price_low",
+        "price_high",
+        "strength"
+      ],
+      "title": "Level",
+      "type": "object"
+    },
+    "NarrativeSection": {
+      "additionalProperties": false,
+      "description": "One written section and the evidence it leans on.",
+      "properties": {
+        "evidence": {
+          "description": "Evidence ids only, e.g. ['E3', 'E4']. The id alone, not the evidence text.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "text": {
+          "description": "Two to four sentences. Cite ids inline as [E7].",
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "NarrativeSection",
+      "type": "object"
+    },
+    "Opinion": {
+      "additionalProperties": false,
+      "description": "The analyst's read, which is the one place an opinion is wanted.",
+      "properties": {
+        "alternative_scenario": {
+          "description": "The other way this resolves.",
+          "minLength": 1,
+          "title": "Alternative Scenario",
+          "type": "string"
+        },
+        "reason": {
+          "description": "Why this decision, grounded in the evidence.",
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "risk": {
+          "description": "What would hurt most if the read is wrong.",
+          "minLength": 1,
+          "title": "Risk",
+          "type": "string"
+        },
+        "what_would_change_view": {
+          "description": "Observable events that would change the read. One line each.",
+          "items": {
+            "type": "string"
+          },
+          "title": "What Would Change View",
+          "type": "array"
+        }
+      },
+      "required": [
+        "reason",
+        "risk",
+        "alternative_scenario"
+      ],
+      "title": "Opinion",
+      "type": "object"
+    },
+    "PatternResult": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "enum": [
+            "classic",
+            "candlestick",
+            "smc"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "confirmation_rule": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confirmation Rule"
+        },
+        "detection_method": {
+          "default": "algorithmic",
+          "enum": [
+            "algorithmic",
+            "vision",
+            "both"
+          ],
+          "title": "Detection Method",
+          "type": "string"
+        },
+        "direction": {
+          "enum": [
+            "bullish",
+            "bearish",
+            "neutral"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "end_time": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "End Time"
+        },
+        "evidence_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence Id"
+        },
+        "invalidation_price": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Invalidation Price"
+        },
+        "key_points": {
+          "additionalProperties": true,
+          "title": "Key Points",
+          "type": "object"
+        },
+        "measured_target": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Measured Target"
+        },
+        "price_high": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Price High"
+        },
+        "price_low": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Price Low"
+        },
+        "start_time": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Start Time"
+        },
+        "status": {
+          "enum": [
+            "forming",
+            "confirmed",
+            "failed",
+            "mitigated",
+            "unmitigated",
+            "invalidated"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "category",
+        "type",
+        "direction",
+        "status",
+        "confidence"
+      ],
+      "title": "PatternResult",
+      "type": "object"
+    },
+    "PredictionSpec": {
+      "additionalProperties": false,
+      "description": "A falsifiable statement stored by Laravel and scored by the Phase 6 evaluator.",
+      "properties": {
+        "as_of": {
+          "format": "date-time",
+          "title": "As Of",
+          "type": "string"
+        },
+        "direction": {
+          "enum": [
+            "long",
+            "short",
+            "flat"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "entry_price": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entry Price"
+        },
+        "horizon_bars": {
+          "exclusiveMinimum": 0,
+          "title": "Horizon Bars",
+          "type": "integer"
+        },
+        "invalidation_price": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Invalidation Price"
+        },
+        "kind": {
+          "enum": [
+            "directional_bias",
+            "trade_setup"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "reference_price": {
+          "exclusiveMinimum": 0,
+          "title": "Reference Price",
+          "type": "number"
+        },
+        "risk_reward": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Risk Reward"
+        },
+        "scenario": {
+          "enum": [
+            "primary",
+            "bullish",
+            "bearish"
+          ],
+          "title": "Scenario",
+          "type": "string"
+        },
+        "setup_score": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Setup Score"
+        },
+        "stop_price": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stop Price"
+        },
+        "target_price_1": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Price 1"
+        },
+        "target_price_2": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Price 2"
+        },
+        "timeframe": {
+          "enum": [
+            "15m",
+            "1h",
+            "4h",
+            "1D",
+            "1W"
+          ],
+          "title": "Timeframe",
+          "type": "string"
+        },
+        "trigger_price": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trigger Price"
+        },
+        "trigger_type": {
+          "enum": [
+            "immediate",
+            "close_above",
+            "close_below",
+            "touch"
+          ],
+          "title": "Trigger Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "scenario",
+        "direction",
+        "timeframe",
+        "trigger_type",
+        "reference_price",
+        "as_of",
+        "horizon_bars"
+      ],
+      "title": "PredictionSpec",
+      "type": "object"
+    },
+    "Scenario": {
+      "additionalProperties": false,
+      "properties": {
+        "invalidation": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Invalidation"
+        },
+        "name": {
+          "enum": [
+            "bullish",
+            "bearish"
+          ],
+          "title": "Name",
+          "type": "string"
+        },
+        "narrative": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Narrative"
+        },
+        "primary": {
+          "title": "Primary",
+          "type": "boolean"
+        },
+        "targets": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Targets",
+          "type": "array"
+        },
+        "trigger": {
+          "title": "Trigger",
+          "type": "string"
+        },
+        "trigger_price": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trigger Price"
+        },
+        "trigger_type": {
+          "enum": [
+            "immediate",
+            "close_above",
+            "close_below",
+            "touch"
+          ],
+          "title": "Trigger Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "primary",
+        "trigger",
+        "trigger_type"
+      ],
+      "title": "Scenario",
+      "type": "object"
+    },
+    "ScenarioNarrative": {
+      "additionalProperties": false,
+      "description": "The prose for one scenario. Its trigger, targets and invalidation are injected.",
+      "properties": {
+        "evidence": {
+          "description": "Evidence ids only, e.g. ['E3', 'E4'].",
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "name": {
+          "enum": [
+            "bullish",
+            "bearish"
+          ],
+          "title": "Name",
+          "type": "string"
+        },
+        "narrative": {
+          "description": "Conditional: 'If ... then ... ; invalid if ...'. Never state certainty.",
+          "minLength": 1,
+          "title": "Narrative",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "narrative"
+      ],
+      "title": "ScenarioNarrative",
+      "type": "object"
+    },
+    "ScoreBreakdown": {
+      "additionalProperties": false,
+      "properties": {
+        "adx_regime": {
+          "default": "neutral",
+          "enum": [
+            "trending",
+            "ranging",
+            "neutral"
+          ],
+          "title": "Adx Regime",
+          "type": "string"
+        },
+        "bias": {
+          "enum": [
+            "bullish",
+            "bearish",
+            "neutral"
+          ],
+          "title": "Bias",
+          "type": "string"
+        },
+        "data_quality": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Data Quality",
+          "type": "number"
+        },
+        "dropped_factors": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Dropped Factors",
+          "type": "array"
+        },
+        "effective_score": {
+          "maximum": 1,
+          "minimum": -1,
+          "title": "Effective Score",
+          "type": "number"
+        },
+        "evidence_agreement": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Evidence Agreement",
+          "type": "number"
+        },
+        "factors": {
+          "items": {
+            "$ref": "#/$defs/FactorScore"
+          },
+          "title": "Factors",
+          "type": "array"
+        },
+        "raw_score": {
+          "maximum": 1,
+          "minimum": -1,
+          "title": "Raw Score",
+          "type": "number"
+        },
+        "setup_score": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Setup Score",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "setup_score",
+        "raw_score",
+        "effective_score",
+        "bias",
+        "data_quality",
+        "evidence_agreement"
+      ],
+      "title": "ScoreBreakdown",
+      "type": "object"
+    },
+    "SmcResult": {
+      "additionalProperties": false,
+      "properties": {
+        "dealing_range": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DealingRange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "events": {
+          "items": {
+            "$ref": "#/$defs/PatternResult"
+          },
+          "title": "Events",
+          "type": "array"
+        },
+        "framing_note": {
+          "default": "Smart Money Concepts are a rule-based framework for reading price structure. The zones below are derived from price action alone; they do not reveal actual institutional orders or intentions.",
+          "title": "Framing Note",
+          "type": "string"
+        },
+        "last_event": {
+          "anyOf": [
+            {
+              "enum": [
+                "bos_bullish",
+                "bos_bearish",
+                "choch_bullish",
+                "choch_bearish"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Last Event"
+        },
+        "structure": {
+          "enum": [
+            "bullish",
+            "bearish",
+            "neutral"
+          ],
+          "title": "Structure",
+          "type": "string"
+        },
+        "swings": {
+          "items": {
+            "$ref": "#/$defs/SwingPoint"
+          },
+          "title": "Swings",
+          "type": "array"
+        }
+      },
+      "required": [
+        "structure"
+      ],
+      "title": "SmcResult",
+      "type": "object"
+    },
+    "StageTiming": {
+      "additionalProperties": false,
+      "properties": {
+        "duration_ms": {
+          "minimum": 0,
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "stage": {
+          "title": "Stage",
+          "type": "string"
+        }
+      },
+      "required": [
+        "stage",
+        "duration_ms"
+      ],
+      "title": "StageTiming",
+      "type": "object"
+    },
+    "SwingPoint": {
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "format": "date-time",
+          "title": "Date",
+          "type": "string"
+        },
+        "degree": {
+          "enum": [
+            "internal",
+            "external"
+          ],
+          "title": "Degree",
+          "type": "string"
+        },
+        "index": {
+          "title": "Index",
+          "type": "integer"
+        },
+        "kind": {
+          "enum": [
+            "high",
+            "low"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "enum": [
+                "HH",
+                "HL",
+                "LH",
+                "LL"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "price": {
+          "title": "Price",
+          "type": "number"
+        }
+      },
+      "required": [
+        "index",
+        "date",
+        "price",
+        "kind",
+        "degree"
+      ],
+      "title": "SwingPoint",
+      "type": "object"
+    },
+    "ThesisReview": {
+      "additionalProperties": false,
+      "description": "The user's own thesis, weighed. Absent when they offered none.",
+      "properties": {
+        "contradicting": {
+          "description": "Evidence against it.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Contradicting",
+          "type": "array"
+        },
+        "supporting": {
+          "description": "Evidence for their thesis.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Supporting",
+          "type": "array"
+        }
+      },
+      "title": "ThesisReview",
+      "type": "object"
+    },
+    "TradePlan": {
+      "additionalProperties": false,
+      "properties": {
+        "direction": {
+          "enum": [
+            "long",
+            "short",
+            "flat"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "entry_price": {
+          "exclusiveMinimum": 0,
+          "title": "Entry Price",
+          "type": "number"
+        },
+        "entry_type": {
+          "enum": [
+            "breakout",
+            "pullback",
+            "market"
+          ],
+          "title": "Entry Type",
+          "type": "string"
+        },
+        "evidence_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence Id"
+        },
+        "position_pct": {
+          "minimum": 0,
+          "title": "Position Pct",
+          "type": "number"
+        },
+        "position_value": {
+          "minimum": 0,
+          "title": "Position Value",
+          "type": "number"
+        },
+        "quantity": {
+          "minimum": 0,
+          "title": "Quantity",
+          "type": "integer"
+        },
+        "reasons": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Reasons",
+          "type": "array"
+        },
+        "reward_pct": {
+          "title": "Reward Pct",
+          "type": "number"
+        },
+        "risk_pct": {
+          "title": "Risk Pct",
+          "type": "number"
+        },
+        "rr_gross": {
+          "title": "Rr Gross",
+          "type": "number"
+        },
+        "rr_net": {
+          "title": "Rr Net",
+          "type": "number"
+        },
+        "stop_basis": {
+          "default": "",
+          "title": "Stop Basis",
+          "type": "string"
+        },
+        "stop_price": {
+          "exclusiveMinimum": 0,
+          "title": "Stop Price",
+          "type": "number"
+        },
+        "targets": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Targets",
+          "type": "array"
+        },
+        "trigger_met": {
+          "default": false,
+          "title": "Trigger Met",
+          "type": "boolean"
+        },
+        "trigger_price": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trigger Price"
+        },
+        "trigger_type": {
+          "enum": [
+            "immediate",
+            "close_above",
+            "close_below",
+            "touch"
+          ],
+          "title": "Trigger Type",
+          "type": "string"
+        },
+        "viable": {
+          "title": "Viable",
+          "type": "boolean"
+        },
+        "viable_at_price": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Viable At Price"
+        }
+      },
+      "required": [
+        "direction",
+        "entry_type",
+        "entry_price",
+        "trigger_type",
+        "stop_price",
+        "risk_pct",
+        "reward_pct",
+        "rr_gross",
+        "rr_net",
+        "quantity",
+        "position_value",
+        "position_pct",
+        "viable"
+      ],
+      "title": "TradePlan",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "The engine's complete answer for one analysis.",
+  "properties": {
+    "analysis_id": {
+      "title": "Analysis Id",
+      "type": "string"
+    },
+    "as_of": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "As Of"
+    },
+    "bar_count": {
+      "default": 0,
+      "title": "Bar Count",
+      "type": "integer"
+    },
+    "base_rates": {
+      "items": {
+        "$ref": "#/$defs/BaseRate"
+      },
+      "title": "Base Rates",
+      "type": "array"
+    },
+    "bias": {
+      "anyOf": [
+        {
+          "enum": [
+            "bullish",
+            "bearish",
+            "neutral"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Bias"
+    },
+    "data_quality": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Data Quality",
+      "type": "number"
+    },
+    "decision": {
+      "$ref": "#/$defs/Decision"
+    },
+    "engine_version": {
+      "title": "Engine Version",
+      "type": "string"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/EvidenceItem"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "indicators": {
+      "items": {
+        "$ref": "#/$defs/IndicatorResult"
+      },
+      "title": "Indicators",
+      "type": "array"
+    },
+    "last_price": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Last Price"
+    },
+    "levels": {
+      "items": {
+        "$ref": "#/$defs/Level"
+      },
+      "title": "Levels",
+      "type": "array"
+    },
+    "narrative": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AnalystNarrative"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "narrative_source": {
+      "anyOf": [
+        {
+          "enum": [
+            "llm",
+            "template"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Narrative Source"
+    },
+    "outlook": {
+      "items": {
+        "$ref": "#/$defs/HorizonOutlook"
+      },
+      "title": "Outlook",
+      "type": "array"
+    },
+    "patterns": {
+      "items": {
+        "$ref": "#/$defs/PatternResult"
+      },
+      "title": "Patterns",
+      "type": "array"
+    },
+    "predictions": {
+      "items": {
+        "$ref": "#/$defs/PredictionSpec"
+      },
+      "title": "Predictions",
+      "type": "array"
+    },
+    "report_markdown": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Report Markdown"
+    },
+    "scenarios": {
+      "items": {
+        "$ref": "#/$defs/Scenario"
+      },
+      "title": "Scenarios",
+      "type": "array"
+    },
+    "schema_version": {
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "score": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ScoreBreakdown"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "setup_score": {
+      "anyOf": [
+        {
+          "maximum": 100,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Setup Score"
+    },
+    "smc": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SmcResult"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "status": {
+      "default": "completed",
+      "enum": [
+        "completed",
+        "partial"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "symbol": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Symbol"
+    },
+    "tier": {
+      "enum": [
+        "A",
+        "B",
+        "C"
+      ],
+      "title": "Tier",
+      "type": "string"
+    },
+    "timeframe": {
+      "enum": [
+        "15m",
+        "1h",
+        "4h",
+        "1D",
+        "1W"
+      ],
+      "title": "Timeframe",
+      "type": "string"
+    },
+    "timings": {
+      "items": {
+        "$ref": "#/$defs/StageTiming"
+      },
+      "title": "Timings",
+      "type": "array"
+    },
+    "trade_plans": {
+      "items": {
+        "$ref": "#/$defs/TradePlan"
+      },
+      "title": "Trade Plans",
+      "type": "array"
+    },
+    "trading_style": {
+      "enum": [
+        "intraday",
+        "swing",
+        "positional",
+        "investing"
+      ],
+      "title": "Trading Style",
+      "type": "string"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "analysis_id",
+    "engine_version",
+    "timeframe",
+    "trading_style",
+    "tier",
+    "data_quality",
+    "decision"
+  ],
+  "title": "AnalysisResult",
+  "type": "object"
+}
